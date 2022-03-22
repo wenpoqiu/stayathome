@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <script>
+        window._AMapSecurityConfig = {
+            securityJsCode: '17208d132f2d5cf6045e1f90cf32d4eb',
+        }
+    </script>
+    <script src="https://webapi.amap.com/maps?v=2.0&key=d42d71cd7250a4a3ee30cdf3aba492f1"></script>
+    <title>上海疫情</title>
+    <style>
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        .markerLabel {
+            color: '#333333';
+            background-color: '#fff';
+            padding: 5;
+            border-radius: 10;
+            border-color: '#fff';
+            font-size: 14;
+            border-width: 5;
+            text-align: 'center';
+        }
+
+        #container {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+
+        .title {
+            position: fixed;
+            bottom: 80px;
+            font-family: PingFang SC;
+            font-weight: 500;
+            color: #000000;
+            font-size: 30rpx;
+            z-index: 100;
+            width: 100%;
+            text-align: center;
+        }
+
+        .sub_title {
+            position: fixed;
+            bottom: 55px;
+            font-weight: 500;
+            color: #000000;
+            font-size: 30rpx;
+            z-index: 100;
+            z-index: 100;
+            width: 100%;
+            text-align: center;
+        }
+
+        .top_tip {
+            position: fixed;
+            bottom: 55px;
+            font-size: 28rpx;
+            font-family: PingFang SC;
+            font-weight: 500;
+            color: #222222;
+            z-index: 100;
+            width: 100%;
+            text-align: center;
+        }
+
+        .top_subtip {
+            position: fixed;
+            bottom: 30px;
+            font-size: 28rpx;
+            font-family: PingFang SC;
+            font-weight: 400;
+            color: #222222;
+            z-index: 100;
+            width: 100%;
+            text-align: center;
+        }
+
+        button[size='mini'] {
+            width: auto;
+            padding: 0 0.75em;
+            line-height: 2;
+            font-size: 16px;
+            display: inline-block;
+        }
+
+        button[type='primary'] {
+            color: #fff;
+            background-color: #07c160;
+        }
+
+        button {
+            border-width: 0;
+            border-radius: 4px;
+            font-weight: 700;
+            background: initial;
+            position: relative;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 14px;
+            padding-right: 14px;
+            box-sizing: border-box;
+            text-align: center;
+            text-decoration: none;
+            -webkit-tap-highlight-color: transparent;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .markerinfoTitle {
+            border-bottom: 1px solid #222222;
+        }
+        .markerinfoTitle h4 {
+            margin-block-start: 5px;
+            margin-block-end: 3px;
+        }
+        .markerinfoTitle p {
+            margin-block-start: 3px;
+            margin-block-end: 3px;
+        }
+        .dateItem {
+            margin-block-start: 3px;
+            margin-block-end: 3px;
+        }
+        #myPageTop {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            font-family: PingFang SC;
+            font-size: 14px;
+            background: none 0px 0px repeat scroll rgb(255, 255, 255);
+            border-width: 1px;
+            border-style: solid;
+            border-color: rgb(204, 204, 204);
+            border-image: initial;
+            margin: 10px auto;
+            padding: 6px;
+        }
+        .amap_lib_placeSearch_poi {
+            background: url(https://a.amap.com/jsapi/static/image/plugin/marker_blue.png) no-repeat;
+            background-size: 20px 25px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='container'></div>
+    <div id="myPageTop">
+        <table>
+            <tr>
+                <td>
+                    <label>输入要查询的位置：</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="tipinput"/>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="title">
+        <button class="mini-btn" type="primary" size="mini" onclick="changeDate()">
+            <span id="dateString"></span>
+        </button>
+    </div>
+    <div class="sub_title" id="addsCount"></div>
+    <div class="top_subtip">仅供参考，具体数据以上海发布为准</div>
+
+    <script>
+        var jsUrl = "https://sinacloud.net/shanghaifabudata/data.js"
+        jsUrl += "?"
+        jsUrl += Math.random()
+        document.write('<scr'+'ipt type="text/javascript"  src="' + jsUrl + '"></sc'+'ript>')
+    </script>
+    <script>
+        function toDateString(date) {
+            var dateStr = '' + date
+            dateStr = dateStr.slice(0, 4) + '-' + dateStr.slice(4);
+            dateStr = dateStr.slice(0, 7) + '-' + dateStr.slice(7);
+            var dateObj = new Date(dateStr)
+            var y = dateObj.getFullYear()
+            var m = dateObj.getMonth() + 1
+            var d = dateObj.getDate()
+            return y + '年' + m + '月' + d + '号'
+        }
+
+        console.log(adds)
+        var startDate = toDateString(adds.startDate)
+        var endDate = toDateString(adds.endDate)
+        console.log('startDate = ', startDate, 'endDate = ', endDate)
+        var selectDates = [startDate + '~' + endDate, endDate]
+        var lastAdds = {
+            addrs: {}
+        }
+        lastAdds.addrs[adds.endDate] = adds.addrs[adds.endDate]
+        var selectDateIndex = 0
+        var selectDateString = selectDates[0]
+
+        window._AMapSecurityConfig = {
+            securityJsCode: '17208d132f2d5cf6045e1f90cf32d4eb',
+        }
+        var map = new AMap.Map('container', {
+            viewMode: '2D', // 默认使用 2D 模式，如果希望使用带有俯仰角的 3D 模式，请设置 viewMode: '3D',
+            zoom: 14, //初始化地图层级
+            center: [121.5, 31.23], //初始化地图中心点
+            showLabel : true
+        });
+
+        AMap.plugin(['AMap.ToolBar', 'AMap.Scale'], function () {
+            var toolBar = new AMap.ToolBar();
+            var scale = new AMap.Scale();
+            map.addControl(toolBar);
+            map.addControl(scale);
+        })
+        /*
+        AMap.plugin(['AMap.Geolocation', 'AMap.Scale', 'AMap.ToolBar'], function () {
+
+            var scale = new AMap.Scale();
+            map.addControl(scale);
+
+            var toolBar = new AMap.ToolBar({
+                position : 'LT'
+            });
+            map.addControl(toolBar);
+
+            var geolocation = new AMap.Geolocation({
+                enableHighAccuracy: true,
+                timeout: 10000,
+                offset: [10, 20],
+                zoomToAccuracy: true,
+                position: 'RB'
+            })
+
+            geolocation.getCurrentPosition(function (status, result) {
+                if (status == 'complete') {
+                    onComplete(result)
+                } else {
+                    onError(result)
+                }
+            });
+            map.addControl(geolocation)
+
+            function onComplete(data) {
+                // data是具体的定位信息
+                console.log('onComplete', data)
+            }
+
+            function onError(data) {
+                // 定位出错
+                console.log('onError', data)
+                //alert("定位失败！" + data.message);
+            }
+        })
+        */
+        //输入提示
+        var autoOptions = {
+            input: "tipinput",
+            city: '021',
+            citylimit: true
+        };
+
+        AMap.plugin(['AMap.PlaceSearch','AMap.AutoComplete'], function(){
+            var auto = new AMap.AutoComplete(autoOptions);
+            var placeSearch = new AMap.PlaceSearch({
+                map: map,
+                city: '021',
+                citylimit: true,
+                pageSize: 1
+            });  //构造地点查询类
+            auto.on("select", select);//注册监听，当选中某条记录时会触发
+            function select(e) {
+                placeSearch.setCity(e.poi.adcode);
+                placeSearch.search(e.poi.name);  //关键字查询查询
+            }
+        });
+        // 310000
+        /*
+        var adCode = 310000;
+        var depth = 2;
+
+        // 创建省份图层
+        var disProvince;
+        function initPro(code, dep) {
+            dep = typeof dep == 'undefined' ? 2 : dep;
+            adCode = code;
+            depth = dep;
+
+            disProvince && disProvince.setMap(null);
+
+            disProvince = new AMap.DistrictLayer.Province({
+                zIndex: 12,
+                adcode: [code],
+                depth: dep,
+                styles: {
+                    'fill': function (properties) {
+                        // properties为可用于做样式映射的字段，包含
+                        // NAME_CHN:中文名称
+                        // adcode_pro
+                        // adcode_cit
+                        // adcode
+                        var adcode = properties.adcode;
+                        return getColorByAdcode(adcode);
+                    },
+                    'province-stroke': 'cornflowerblue',
+                    'city-stroke': 'white', // 中国地级市边界
+                    'county-stroke': 'rgba(255,255,255,0.5)' // 中国区县边界
+                }
+            });
+
+            disProvince.setMap(map);
+        }
+
+        // 颜色辅助方法
+        var colors = {};
+        var getColorByAdcode = function (adcode) {
+            if (!colors[adcode]) {
+                var gb = Math.random() * 155 + 50;
+                colors[adcode] = 'rgb(' + gb + ',' + gb + ',255)';
+            }
+
+            return colors[adcode];
+        };
+        initPro(adCode, depth);
+        */
+        var icon = {
+            type: 'image',
+            image: 'http://sinacloud.net/shanghaifabudata/covid.png',
+            size: [26, 26],
+            anchor: 'center',
+        };
+
+        var markers = []
+        function openMarkInfo(marker) {
+            
+            //构建信息窗体中显示的内容
+            var info = [];
+            info.push("<div class='markerinfoTitle'><h4>" + marker.addr.formatted_address + "</h4><p class='reportDate'>通告日期</p></div>");
+            for(var date of marker.dates) {
+                info.push("<p class='dateItem'>" + date + "</p>");
+            }
+            
+            infoWindow = new AMap.InfoWindow({
+                isCusto: true,
+                closeWhenClickMap : true,
+                content: info.join("")  //使用默认信息窗体框样式，显示信息内容
+            });
+
+            infoWindow.open(map, marker.lnglat);
+            
+        }
+        var labelsLayer = new AMap.LabelsLayer({
+            zooms: [2, 20],
+            zIndex: 1000,
+            collision: true,
+            allowCollision: true,
+        });
+        map.add(labelsLayer);
+        function loadMarkers(selectData) {
+            console.log(selectData)
+            var markersMap = new Map()
+            var addrDateMap = new Map()
+
+            var index = 0
+            for (var date in selectData.addrs) {
+                var addrs = selectData.addrs[date]
+                //console.log(date, addrs)
+                var length = addrs.length
+                console.log(date, 'length = ', length)
+
+                for (var i = 0; i < length; i++) {
+                    index++
+                    var add = addrs[i];
+                    add.dateStr = this.toDateString(add.date)
+                    var lnglat = add.location.split(',')
+
+                    var title = add.address
+                    var dates = addrDateMap.get(add.location)
+                    if (!dates) {
+                        dates = []
+                    }
+                    if (!dates.includes(add.dateStr)) {
+                        dates.push(add.dateStr)
+                    }
+                    addrDateMap.set(add.location, dates)
+
+                    var text = {
+                        content: title,
+                        direction: 'bottom',
+                        offset: [0, 0],
+                        style: {
+                            fontSize: 12,
+                            fillColor: '#22886f',
+                            strokeColor: '#fff',
+                            strokeWidth: 2,
+                        }
+                    };
+                    var marker = new AMap.LabelMarker({
+                        name: 'labelMarker' + index,
+                        position: lnglat, //[116.466994, 39.984904],
+                        zIndex: 16,
+                        icon: icon,
+                        text: text,
+                    });
+
+                    marker.dates = dates,
+                    marker.addr = add
+                    marker.lnglat = lnglat
+                    markersMap.set(add.location, marker)
+
+                    marker.on('click', function (e) {
+                        console.log(e.target)
+                        openMarkInfo(e.target)
+                    });
+                }
+            }
+
+            labelsLayer.clear()
+            markers = []
+            markersMap.forEach(function (value, key) {
+                markers.push(value)
+                labelsLayer.add(value);
+            })
+            
+            console.log('Total Markers = ', markers.length)
+            updateTips() 
+        }
+        function updateTips() {
+            if (0 == selectDateIndex) {
+                document.getElementById('dateString').innerHTML = startDate + '~' + endDate
+            } else {
+                document.getElementById('dateString').innerHTML = endDate
+            }
+            document.getElementById('addsCount').innerHTML = '全市确诊+无症状地区' + markers.length + '个'
+        }
+        function changeDate(){
+            if (0 == selectDateIndex){
+                selectDateIndex = 1
+                loadMarkers(lastAdds)
+            } else {
+                selectDateIndex = 0
+                loadMarkers(adds)
+            }
+        }
+        loadMarkers(adds)
+
+    </script>
+</body>
+
+</html>
