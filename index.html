@@ -246,12 +246,14 @@
             function onComplete(data) {
                 // data是具体的定位信息
                 console.log('onComplete', data)
+                loadDate()
             }
 
             function onError(data) {
                 // 定位出错
                 console.log('onError', data)
                 //alert("定位失败！" + data.message);
+                loadDate()
             }
         })
         
@@ -399,7 +401,14 @@
                 loadMarkers(adds)
             }
         }
-        loadMarkers(adds)
+        function loadDate(){
+            if (0 == selectDateIndex){
+                loadMarkers(adds)
+            } else {
+                loadMarkers(lastAdds)
+            }
+        }
+        loadDate()
 
     </script>
 </body>
