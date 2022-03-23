@@ -222,7 +222,7 @@
             map.addControl(toolBar);
             map.addControl(scale);
         })
-        /*
+        
         AMap.plugin(['AMap.Geolocation'], function () {
 
             var geolocation = new AMap.Geolocation({
@@ -252,7 +252,7 @@
                 console.log('onError', data)
                 //alert("定位失败！" + data.message);
             }
-        })*/
+        })
         
         //输入提示
         var autoOptions = {
@@ -387,7 +387,7 @@
             } else {
                 document.getElementById('dateString').innerHTML = endDate
             }
-            document.getElementById('addsCount').innerHTML = '全市确诊+无症状地区' + markers.length + '个'
+            document.getElementById('addsCount').innerHTML = '上海市确诊+无症状地区' + markers.length + '个'
         }
         function changeDate(){
             if (0 == selectDateIndex){
