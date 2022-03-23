@@ -305,7 +305,7 @@
             }
             
             infoWindow = new AMap.InfoWindow({
-                isCusto: true,
+                offset: new AMap.Pixel(0, -10),
                 closeWhenClickMap : true,
                 content: info.join("")  //使用默认信息窗体框样式，显示信息内容
             });
