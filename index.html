@@ -291,6 +291,14 @@
             anchor: 'center',
         };
 
+        var labelsLayer = new AMap.LabelsLayer({
+            zooms: [2, 20],
+            zIndex: 1000,
+            collision: false,
+            allowCollision: false,
+        });
+        map.add(labelsLayer);
+
         var markers = []
         function openMarkInfo(marker) {
             
@@ -310,13 +318,7 @@
             infoWindow.open(map, marker.lnglat);
             
         }
-        var labelsLayer = new AMap.LabelsLayer({
-            zooms: [2, 20],
-            zIndex: 1000,
-            collision: true,
-            allowCollision: true,
-        });
-        map.add(labelsLayer);
+          
         function loadMarkers(selectData) {
             console.log(selectData)
             var markersMap = new Map()
