@@ -225,14 +225,6 @@
         /*
         AMap.plugin(['AMap.Geolocation'], function () {
 
-            var scale = new AMap.Scale();
-            map.addControl(scale);
-
-            var toolBar = new AMap.ToolBar({
-                position : 'LT'
-            });
-            map.addControl(toolBar);
-
             var geolocation = new AMap.Geolocation({
                 enableHighAccuracy: true,
                 timeout: 10000,
@@ -304,7 +296,7 @@
             
             //构建信息窗体中显示的内容
             var info = [];
-            info.push("<div class='markerinfoTitle'><h4>" + marker.addr.formatted_address + "</h4><p class='reportDate'>通告日期</p></div>");
+            info.push("<div class='markerinfoTitle'><h4>" + marker.addr.address + "</h4><p class='reportDate'>通告日期</p></div>");
             for(var date of marker.dates) {
                 info.push("<p class='dateItem'>" + date + "</p>");
             }
@@ -356,7 +348,8 @@
                             fillColor: '#22886f',
                             strokeColor: '#fff',
                             strokeWidth: 2,
-                        }
+                        },
+                        zooms :[14, 20]
                     };
                     var marker = new AMap.LabelMarker({
                         name: 'labelMarker' + index,
