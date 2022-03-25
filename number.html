@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <title>Stay at Home | 数据统计</title>
+    <style>
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        #numContainer {
+            padding-top: 10px;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        #areaContainer {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='areaContainer'></div>
+    <div id='numContainer'></div>
+    <script src='https://cdn.jsdelivr.net/npm/echarts@5.3.1/dist/echarts.min.js'></script>
+    <script>
+        var jsUrl = "https://sinacloud.net/shanghaifabudata/number.js"
+        jsUrl += "?"
+        jsUrl += Math.random()
+        document.write('<scr' + 'ipt type="text/javascript"  src="' + jsUrl + '"></sc' + 'ript>')
+    </script>
+    <script>
+        function toDateString(date) {
+            var dateStr = '' + date
+            dateStr = dateStr.slice(0, 4) + '-' + dateStr.slice(4);
+            dateStr = dateStr.slice(0, 7) + '-' + dateStr.slice(7);
+            var dateObj = new Date(dateStr)
+            var y = dateObj.getFullYear()
+            var m = dateObj.getMonth() + 1
+            var d = dateObj.getDate()
+            return y + '-' + m + '-' + d
+        }
+
+        console.log(number)
+        var startDate = toDateString(number.startDate)
+        var endDate = toDateString(number.endDate)
+        console.log('startDate = ', startDate, 'endDate = ', endDate)
+        var numChartDom = document.getElementById('numContainer');
+        var areaChartDom = document.getElementById('areaContainer');
+        var days = Object.keys(number.number)
+        var daysStr = []
+        var confirmed = []
+        var asymptomatic = []
+        var controled_confirmed = []
+        var controled_asymptomatic = []
+        var caseNum = []
+        var controled_caseNum = []
+        var risk = []
+        days.forEach(function (key, value) {
+            daysStr[value] = toDateString(key)
+            dayData = number.number[key]
+            console.log(key, value, dayData)
+
+            confirmed[value] = dayData.case.confirmed
+            asymptomatic[value] = dayData.case.asymptomatic
+
+            controled_confirmed[value] = dayData.case.controled_confirmed
+            controled_asymptomatic[value] = dayData.case.controled_asymptomatic
+
+            caseNum[value] = parseInt(confirmed[value]) + parseInt(asymptomatic[value])
+            controled_caseNum[value] = parseInt(controled_confirmed[value]) + parseInt(controled_asymptomatic[value])
+
+            var rate = (controled_caseNum[value]) / (caseNum[value])
+            risk[value] = Math.round(rate * 100)
+        });
+        console.log(daysStr, caseNum, controled_caseNum, risk)
+        var numChart = echarts.init(numChartDom);
+        var numOption;
+
+        numOption = {
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    crossStyle: {
+                        color: '#999'
+                    }
+                }
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: { show: true }
+                }
+            },
+            legend: {
+                data: ['确诊 + 无症状', '管控中发现', '安全系数']
+            },
+            grid: {
+                top: 80
+            },
+            xAxis: [
+                {
+                    type: 'value',
+                    name: '人数',
+                    boundaryGap: ['20%', '20%'],
+                    axisLabel: {
+                        formatter: '{value}'
+                    },
+                    position: 'bottom',
+                    align: 'center',
+                    nameLocation: 'center',
+                    nameGap: 30
+                },
+                {
+                    type: 'value',
+                    name: '安全系数 = 管控中发现/(确诊 + 无症状)',
+                    min: 0,
+                    max: 100,
+                    interval: 10,
+                    axisLabel: {
+                        formatter: '{value} %'
+                    },
+                    position: 'top',
+                    align: 'center',
+                    nameLocation: 'center',
+                    nameGap: 30
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'category',
+                    data: daysStr,
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                }
+            ],
+            series: [
+                {
+                    name: '确诊 + 无症状',
+                    type: 'bar',
+                    barWidth: 20,
+                    showBackground: true,
+                    tooltip: {
+                        valueFormatter: function (value) {
+                            return value;
+                        }
+                    },
+                    itemStyle: {
+                        color: '#a90000'
+                    },
+                    label: {
+                        show: true,
+                        position: 'right',
+                    },
+                    data: caseNum,
+                },
+                {
+                    name: '管控中发现',
+                    type: 'bar',
+                    barWidth: 20,
+                    showBackground: true,
+                    tooltip: {
+                        valueFormatter: function (value) {
+                            return value;
+                        }
+                    },
+                    label: {
+                        show: true,
+                        position: 'right',
+                    },
+                    data: controled_caseNum
+                },
+                {
+                    name: '安全系数',
+                    type: 'line',
+                    xAxisIndex: 1,
+                    tooltip: {
+                        valueFormatter: function (value) {
+                            return '管控中发现/(确诊 + 无症状) = ' + value + '%';
+                        }
+                    },
+                    lineStyle: {
+                        color: '#000',
+                        width: 10
+                    },
+
+                    label: {
+                        show: true,
+                        position: 'right',
+                        formatter: '{c}%'
+                    },
+                    data: risk
+                }
+            ]
+        };
+
+        numOption && numChart.setOption(numOption);
+
+        var areaChart = echarts.init(areaChartDom);
+        var areaOption;
+
+        const updateFrequency = 2000;
+        const dimension = 0;
+
+        areaList = [
+            "黄浦区",
+            "徐汇区",
+            "静安区",
+            "长宁区",
+            "普陀区",
+            "虹口区",
+            "杨浦区",
+            "浦东新区",
+            "闵行区",
+            "宝山区",
+            "嘉定区",
+            "金山区",
+            "松江区",
+            "青浦区",
+            "奉贤区",
+            "崇明区"
+        ]
+        numberList= [] 
+        numberListAll = {}
+        totalNumList = new Array(areaList.length)
+        totalNumList.fill(0)
+        for(i = 0; i < days.length; i++){
+            dd = days[i]
+            numlist = numberListAll[dd]
+            if(!numlist) {
+                numlist = new Array(areaList.length)
+                numlist.fill(0)
+            }
+            areaObj = number.number[dd]['area']
+            for (j = 0; j < areaList.length; j++){
+                aa = areaList[j]
+                num = areaObj[aa]
+                totalNumList[j] = totalNumList[j] + num
+                numlist[j] = totalNumList[j]
+            }
+            numberListAll[dd] = numlist
+        }
+
+        console.log('Display ', numberListAll)
+        firstDay = days[0]
+        function updateDisplayDay(day) {
+            numberList = numberListAll[day]
+        }
+        updateDisplayDay(firstDay)
+        areaOption = {
+            grid: {
+                top: 10,
+                bottom: 30
+            },
+            xAxis: {
+                max: 'dataMax',
+            },
+            yAxis: {
+                type: 'category',
+                inverse: true,
+                max: 10,
+                axisLabel: {
+                    show: true,
+                },
+                animationDuration: 300,
+                animationDurationUpdate: 300,
+                data: areaList
+            },
+            series: [
+                {
+                    data: numberList,
+                    realtimeSort: true,
+                    seriesLayoutBy: 'column',
+                    type: 'bar',
+                    barWidth: 20,
+                    label: {
+                        show: true,
+                        position: 'right',
+                        valueAnimation: true,
+                        fontFamily: 'monospace'
+                    }
+                }
+            ],
+            // Disable init animation.
+            animationDuration: 0,
+            animationDurationUpdate: updateFrequency,
+            animationEasing: 'linear',
+            animationEasingUpdate: 'linear',
+            graphic: {
+                elements: [
+                    {
+                        type: 'text',
+                        right: 160,
+                        bottom: 60,
+                        style: {
+                            text: toDateString(firstDay),
+                            font: 'bolder 80px monospace',
+                            fill: 'rgba(100, 100, 100, 0.25)'
+                        },
+                        z: 100
+                    }
+                ]
+            }
+        };
+        // console.log(areaOption);
+        areaChart.setOption(areaOption);
+        for (let i = 0; i < days.length - 1; ++i) {
+            (function (i) {
+                setTimeout(function () {
+                    updateDay(days[i + 1]);
+                }, (i) * updateFrequency);
+            })(i);
+        }
+        function updateDay(day) {
+            updateDisplayDay(day)
+            areaOption.series[0].data = numberList;
+            areaOption.graphic.elements[0].style.text = toDateString(day);
+            areaChart.setOption(areaOption);
+        }
+
+        areaOption && areaChart.setOption(areaOption);
+    </script>
+</body>
+
+</html>
