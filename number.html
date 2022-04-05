@@ -30,8 +30,9 @@
 </head>
 
 <body>
-    <div id='areaContainer'></div>
     <div id='numContainer'></div>
+    <div id='areaContainer'></div>
+    
     <script src='https://cdn.jsdelivr.net/npm/echarts@5.3.1/dist/echarts.min.js'></script>
     <script>
         var jsUrl = "https://sinacloud.net/shanghaifabudata/number.js"
@@ -150,6 +151,7 @@
                     name: '确诊 + 无症状',
                     type: 'bar',
                     barWidth: 20,
+                    barGap: 0,
                     showBackground: true,
                     tooltip: {
                         valueFormatter: function (value) {
@@ -169,6 +171,7 @@
                     name: '管控中发现',
                     type: 'bar',
                     barWidth: 20,
+                    barGap: 0,
                     showBackground: true,
                     tooltip: {
                         valueFormatter: function (value) {
@@ -315,6 +318,7 @@
         };
         // console.log(areaOption);
         areaChart.setOption(areaOption);
+        /*
         for (let i = 0; i < days.length - 1; ++i) {
             (function (i) {
                 setTimeout(function () {
@@ -328,7 +332,7 @@
             areaOption.graphic.elements[0].style.text = toDateString(day);
             areaChart.setOption(areaOption);
         }
-
+        */
         areaOption && areaChart.setOption(areaOption);
     </script>
 </body>

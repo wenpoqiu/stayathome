@@ -177,7 +177,7 @@
     <div class="top_subtip">仅供参考，具体数据以上海发布为准</div>
 
     <script>
-        var jsUrl = "https://sinacloud.net/shanghaifabudata/data.js"
+        var jsUrl = "https://sinacloud.net/shanghaifabudata/data_short.js"
         jsUrl += "?"
         jsUrl += Math.random()
         document.write('<scr'+'ipt type="text/javascript"  src="' + jsUrl + '"></sc'+'ript>')
@@ -310,7 +310,7 @@
             
             //构建信息窗体中显示的内容
             var info = [];
-            info.push("<div class='markerinfoTitle'><h4>" + marker.addr.address + "</h4><p class='reportDate'>通告日期</p></div>");
+            info.push("<div class='markerinfoTitle'><h4>" + marker.addr.a + "</h4><p class='reportDate'>通告日期</p></div>");
             for(var date of marker.dates) {
                 info.push("<p class='dateItem'>" + date + "</p>");
             }
@@ -340,18 +340,18 @@
                 for (var i = 0; i < length; i++) {
                     index++
                     var add = addrs[i];
-                    add.dateStr = this.toDateString(add.date)
-                    var lnglat = add.location.split(',')
+                    add.dateStr = this.toDateString(date)
+                    var lnglat = add.l.split(',')
 
-                    var title = add.address
-                    var dates = addrDateMap.get(add.location)
+                    var title = add.a
+                    var dates = addrDateMap.get(add.l)
                     if (!dates) {
                         dates = []
                     }
                     if (!dates.includes(add.dateStr)) {
                         dates.push(add.dateStr)
                     }
-                    addrDateMap.set(add.location, dates)
+                    addrDateMap.set(add.l, dates)
 
                     var text = {
                         content: title,
@@ -376,7 +376,7 @@
                     marker.dates = dates,
                     marker.addr = add
                     marker.lnglat = lnglat
-                    markersMap.set(add.location, marker)
+                    markersMap.set(add.l, marker)
 
                     marker.on('click', function (e) {
                         console.log(e.target)
