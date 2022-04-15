@@ -313,13 +313,21 @@
         map.add(labelsLayer);
 
         map.on('zoomend', mapZoomend);
+        map.on('moveend', mapMoveend);
         function mapZoomend(){
+            console.log('mapZoomend')
             var zoom = map.getZoom()
             if (zoom >= startZoom) {
                 map.setFeatures(['bg','point','road','building'])
             } else {
                 map.setFeatures(['bg','road','building'])
             }
+            loadDate()
+        }
+        function mapMoveend(){
+            console.log('mapMoveend')
+            var zoom = map.getZoom()
+            loadDate()
         }
 
         var markers = []
@@ -341,7 +349,21 @@
             infoWindow.open(map, marker.lnglat);
             
         }
-          
+        
+        function calcShow(lnglat) {
+            if(lnglat.length < 2){
+                return false
+            }
+            var position = new AMap.LngLat(lnglat[0], lnglat[1]);
+            const bounds = map.getBounds();
+            const NorthEast = bounds.getNorthEast();
+            const SouthWest = bounds.getSouthWest();
+            const SouthEast = [NorthEast.lng, SouthWest.lat];
+            const NorthWest = [SouthWest.lng, NorthEast.lat];
+            const path = [[NorthEast.lng, NorthEast.lat], SouthEast, [SouthWest.lng, SouthWest.lat], NorthWest]; // 将地图可视区域四个角位置按照顺序放入path，用于判断point是否在可视区域
+            const isPointInRing = AMap.GeometryUtil.isPointInRing(position, path); // 判断point是否在可视区域
+            return isPointInRing
+        }
         function loadMarkers(selectData) {
             console.log(selectData)
             var markersMap = new Map()
@@ -359,7 +381,11 @@
                     var add = addrs[i];
                     add.dateStr = this.toDateString(date)
                     var lnglat = add.l.split(',')
-
+                    //console.log(lnglat)
+                    var bShow = calcShow(lnglat)
+                    if (!bShow) {
+                        continue
+                    }
                     var title = add.a
                     var dates = addrDateMap.get(add.l)
                     if (!dates) {
@@ -414,13 +440,13 @@
         }
         function updateTips() {
             if (selectDateIndex == addsDays.length) {
-                document.getElementById('dateString').innerHTML = + startDate + '~' +  endDate
+                document.getElementById('dateString').innerHTML = startDate + '~' +  endDate
             } else {
                 selectDay = addsDays[selectDateIndex]
                 document.getElementById('dateString').innerHTML = toDateString(selectDay)
             }
             
-            document.getElementById('addsCount').innerHTML = '上海市确诊+无症状地区' + markers.length + '个'
+            document.getElementById('addsCount').innerHTML = '当前范围确诊+无症状地区' + markers.length + '个'
         }
 
         function loadDate(){
