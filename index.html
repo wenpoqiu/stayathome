@@ -205,7 +205,8 @@
         console.log('startDate = ', startDate, 'endDate = ', endDate)
     
         var addsDays = Object.keys(adds.addrs)
-        var selectDateIndex = addsDays.length - 1
+        addsDays.push(startDate + '~' +  endDate)
+        var selectDateIndex = addsDays.length
 
         var mobileSelect1 = new MobileSelect({
             trigger: "#dateString",
@@ -412,18 +413,28 @@
             updateTips() 
         }
         function updateTips() {
-            selectDay = addsDays[selectDateIndex]
-            document.getElementById('dateString').innerHTML = toDateString(selectDay)
+            if (selectDateIndex == addsDays.length) {
+                document.getElementById('dateString').innerHTML = + startDate + '~' +  endDate
+            } else {
+                selectDay = addsDays[selectDateIndex]
+                document.getElementById('dateString').innerHTML = toDateString(selectDay)
+            }
+            
             document.getElementById('addsCount').innerHTML = '上海市确诊+无症状地区' + markers.length + '个'
         }
 
         function loadDate(){
-            selectDay = addsDays[selectDateIndex]
-            selectAdds = {
-                addrs: {}
+            if (selectDateIndex == addsDays.length) {
+                loadMarkers(adds)
+            } else {
+                selectDay = addsDays[selectDateIndex]
+                selectAdds = {
+                    addrs: {}
+                }
+                selectAdds.addrs[selectDay] = adds.addrs[selectDay]
+                loadMarkers(selectAdds)
             }
-            selectAdds.addrs[selectDay] = adds.addrs[selectDay]
-            loadMarkers(selectAdds)
+           
         }
         loadDate()
 
