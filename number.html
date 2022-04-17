@@ -16,7 +16,7 @@
 
         .NumberContainer{
             width: 100%;
-            height: 400px;
+            height: 250px;
             overflow: hidden;
         }
     </style>
@@ -38,7 +38,9 @@
         for (const key in areaNumbers) {
             const element = areaNumbers[key];
             console.log(key, element)
-            var div_child = '<div id = "show_' + key + '" class="NumberContainer"></div>'
+            var div_child = '<div id = "show_total_' + key + '" class="NumberContainer"></div>'
+            showContainer.innerHTML += div_child;
+            div_child = '<div id = "show_risk_' + key + '" class="NumberContainer"></div>'
             showContainer.innerHTML += div_child;
         }
     </script>
@@ -77,7 +79,7 @@
                 } 
             }
 
-            var numChartDom = document.getElementById('show_'+key);
+            var numChartDom = document.getElementById('show_total_'+key);
             var numChart = echarts.init(numChartDom);
             var numOption = {
                 title: {
@@ -93,10 +95,8 @@
                     }
                 },
                 grid: {
-                    left: '3%',
-                    right: '4%',
-                    bottom: '3%',
-                    containLabel: true
+                    left: 45,
+                    right: 40,
                 },
                 toolbox: {
                     feature: {
@@ -105,25 +105,32 @@
                 },
                 legend: {
                     show: true,
-                    right: '3%',
-                    left: '4%',
+                    padding: [
+                        5,  // 上
+                        30, // 右
+                        5,  // 下
+                        60, // 左
+                    ],
                 },
                 xAxis: [
                     {
                         type: 'category',
                         name: '日期',
+                        nameLocation: 'center',
+                        nameTextStyle: {
+                            padding: 10,
+                        },
                         data: daysStr,
-                    },
+                    }
                 ],
                 yAxis: [
                     {
-                        type: 'log',
-                        name: '人数'
-                    },
+                        type: 'value',
+                    }
                 ],
                 series: [
                     {
-                        name: '确诊+无症状',
+                        name: '总数',
                         type: 'line',
                         data: element.total
                     },
@@ -133,26 +140,80 @@
                         data: element.confirmed
                     },
                     {
-                        name: '野生确诊',
-                        //yAxisIndex: 1,
-                        type: 'line',
-                        data: element.confirmed_risk
-                    },
-                    {
                         name: '无症状',
                         type: 'line',
                         data: element.asymptomatic
-                    },
-                    {
-                        name: '野生无症状',
-                        //yAxisIndex: 1,
-                        type: 'line',
-                        data: element.asymptomatic_risk
-                    },
+                    }
                 ]
             };
 
             numOption && numChart.setOption(numOption);
+
+            
+            var riskChartDom = document.getElementById('show_risk_'+key);
+            var riskChart = echarts.init(riskChartDom);
+            var riskOption = {
+                title: {
+                    text: key
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross',
+                        crossStyle: {
+                            color: '#999'
+                        }
+                    }
+                },
+                grid: {
+                    left: 45,
+                    right: 40,
+                },
+                toolbox: {
+                    feature: {
+                        saveAsImage: { show: true }
+                    }
+                },
+                legend: {
+                    show: true,
+                    padding: [
+                        5,  // 上
+                        30, // 右
+                        5,  // 下
+                        60, // 左
+                    ],
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        name: '日期',
+                        nameLocation: 'center',
+                        nameTextStyle: {
+                            padding: 10,
+                        },
+                        data: daysStr,
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value',
+                    }
+                ],
+                series: [
+                    {
+                        name: '野生确诊',
+                        type: 'line',
+                        data: element.confirmed_risk
+                    },
+                    {
+                        name: '野生无症状',
+                        type: 'line',
+                        data: element.asymptomatic_risk
+                    }
+                ]
+            };
+
+            riskOption && riskChart.setOption(riskOption);
         }
     </script>
 </body>
