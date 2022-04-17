@@ -55,6 +55,7 @@
             var d = dateObj.getDate()
             return m + '-' + d
         }
+        document.title="Stay at Home | 数据统计(" +  toDateString(number.endDate) + ')'
         var daysStr = []
         number.date.forEach(function (key, value) {
             daysStr[value] = toDateString(key)

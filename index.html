@@ -65,6 +65,7 @@
             z-index: 100;
             width: 100%;
             text-align: center;
+            display: none;
         }
 
         .top_tip {
@@ -179,8 +180,10 @@
         </button>
     </div>
     <div class="sub_title" id="addsCount"></div>
-    <div class="top_subtip">仅供参考，具体数据以上海发布为准</div>
-
+    <div class="top_subtip">
+        <p>仅供参考，具体数据以上海发布为准</p>
+        <a href="./number.html" style="text-decoration:underline">统计数据</a>
+    </div>
     <script>
         var jsUrl = "https://sinacloud.net/shanghaifabudata/data_short.js"
         jsUrl += "?"
