@@ -109,7 +109,8 @@
                 },
                 grid: {
                     left: 45,
-                    right: 40,
+                    right: 45,
+                    top: 70,
                 },
                 toolbox: {
                     feature: {
@@ -118,6 +119,7 @@
                 },
                 legend: {
                     show: true,
+                    top:30,
                     padding: [
                         5,  // 上
                         30, // 右
@@ -141,16 +143,28 @@
                     {
                         name: '总数',
                         type: 'line',
+                        endLabel: {
+                            show: true,
+                            color: 'inherit'
+                        },
                         data: element.total
                     },
                     {
                         name: '确诊',
                         type: 'line',
+                        endLabel: {
+                            show: true,
+                            color: 'inherit'
+                        },
                         data: element.confirmed
                     },
                     {
                         name: '无症状',
                         type: 'line',
+                        endLabel: {
+                            show: true,
+                            color: 'inherit'
+                        },
                         data: element.asymptomatic
                     },
                     
@@ -177,7 +191,8 @@
                 },
                 grid: {
                     left: 45,
-                    right: 40,
+                    right: 45,
+                    top: 70,
                 },
                 toolbox: {
                     feature: {
@@ -186,6 +201,7 @@
                 },
                 legend: {
                     show: true,
+                    top:30,
                     padding: [
                         5,  // 上
                         30, // 右
@@ -240,6 +256,10 @@
             var riskObj = {
                 name: key,
                 type: 'line',
+                endLabel: {
+                    show: true,
+                    color: 'inherit'
+                },
                 data: riskData
             }
             allRisk.push(riskObj)
@@ -263,7 +283,7 @@
             },
             grid: {
                 left: 45,
-                right: 40,
+                right: 45,
                 top: 150,
             },
             toolbox: {
