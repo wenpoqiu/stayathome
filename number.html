@@ -153,15 +153,7 @@
                         type: 'line',
                         data: element.asymptomatic
                     },
-                    {
-                        name: '社会面',
-                        type: 'line',
-                        endLabel: {
-                            show: true,
-                            color: 'inherit'
-                        },
-                        data: riskData
-                    }
+                    
                 ]
             };
 
@@ -214,6 +206,15 @@
                     }
                 ],
                 series: [
+                {
+                        name: '社会面',
+                        type: 'line',
+                        endLabel: {
+                            show: true,
+                            color: 'inherit'
+                        },
+                        data: riskData
+                    },
                     {
                         name: '野生确诊',
                         type: 'line',
