@@ -206,8 +206,14 @@
         var startDate = toDateString(adds.startDate)
         var endDate = toDateString(adds.endDate)
         console.log('startDate = ', startDate, 'endDate = ', endDate)
-    
-        var addsDays = Object.keys(adds.addrs)
+
+        var addsDays = []
+        var days = Object.keys(adds.addrs)
+        for (let index = 0; index < days.length; index++) {
+            const day = days[index];
+            addsDays.push(toDateString(day))
+        }
+        
         addsDays.push(startDate + '~' +  endDate)
         var selectDateIndex = addsDays.length
 
@@ -215,7 +221,7 @@
             trigger: "#dateString",
             title: "选择日期",
             wheels: [{ data: addsDays }],
-            position: [selectDateIndex], 
+            position: [addsDays.length - 1], 
             transitionEnd: function (indexArr, data) {
             //console.log(data);
             },
