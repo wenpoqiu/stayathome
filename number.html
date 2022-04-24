@@ -13,6 +13,13 @@
             padding: 0;
             margin: 0;
         }
+        .GridContainer {
+            width: 100%;
+            height: 1800px;
+            overflow: hidden;
+            padding: 20px 5px;
+        }
+
         .TotalContainer {
             width: 100%;
             height: 1200px;
@@ -21,7 +28,7 @@
         }
         .BigContainer {
             width: 100%;
-            height: 750px;
+            height: 700px;
             overflow: hidden;
             padding: 20px 5px;
         }
@@ -39,6 +46,7 @@
     <div id="showContainer" style="padding: 10px;">
         <div id="totalContainer" class="BigContainer"></div>
         <div id="riskContainer" class="BigContainer"></div>
+        <div id="ShanghaiContainer" class="BigContainer"></div>
     </div>
 
     <script src='https://cdn.jsdelivr.net/npm/echarts@5.3.1/dist/echarts.min.js'></script>
@@ -54,10 +62,12 @@
         areaNumbers = number.number
         areaCount = 0
         for (const key in areaNumbers) {
-            const element = areaNumbers[key];
-            console.log(key, element)
-            var div_child = '<div id = "show_total_' + key + '" class="NumberContainer"></div>'
-            showContainer.innerHTML += div_child;
+            if (areaCount > 0) {
+                const element = areaNumbers[key];
+                console.log(key, element)
+                var div_child = '<div id = "show_total_' + key + '" class="NumberContainer"></div>'
+                showContainer.innerHTML += div_child;
+            }
             areaCount++
         }
     </script>
@@ -80,7 +90,7 @@
         console.log(daysStr)
 
         function ShowTotalGrid() {
-            var dom = document.getElementById('totalContainer');
+            var dom = document.getElementById('totalGridContainer');
             var chart = echarts.init(dom);
             console.log(dom, chart)
             var N_POINT = 30;
@@ -114,17 +124,21 @@
 
                 yAxes.push({
                     type: 'value',
-                    show: false,
+                    show: true,
                     gridIndex: count,
-                    splitNumber: 1
+                    splitNumber: 1,
+                    interval: 'max'
                 });
                 series.push({
                     name: key,
                     type: 'line',
+                    endLabel: {
+                        show: true,
+                        color: 'inherit'
+                    },
                     xAxisIndex: count,
                     yAxisIndex: count,
-                    data: element.total,
-                    showSymbol: false,
+                    data: element.total
                 });
                 titles.push({
                     textAlign: 'center',
@@ -139,13 +153,13 @@
             grid_num = count + 1
             grids.forEach(function (grid, idx) {
                 console.log('grids', grid, idx)
-                grid.top = Math.floor((idx* 100) / grid_num) + 0.5 + '%';
-                grid.left = 100
-                grid.right = 150
-                grid.height = (1 / grid_num) *100  - 2 + '%';
+                grid.top = 10 + idx* 100;
+                grid.left = 80
+                grid.right = 50
+                grid.height = 60;
                 console.log('grids', grid, idx)
                 titles[idx].left = 15
-                titles[idx].top = parseFloat(grid.top) + '%';
+                titles[idx].top = grid.top + 20
                 console.log('titles', titles, idx)
             });
             option = {
@@ -156,6 +170,15 @@
                         left: 'center'
                     }
                 ]),
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross',
+                        crossStyle: {
+                            color: '#999'
+                        }
+                    }
+                },
                 grid: grids,
                 xAxis: xAxes,
                 yAxis: yAxes,
@@ -168,8 +191,10 @@
 
         allTotal = []
         allRisk = []
-        
+        shanghaiObj = null
         areaIndex = 0
+        
+
         for (const key in areaNumbers) {
             const element = areaNumbers[key];
             element.confirmed_risk_rate = []
@@ -188,9 +213,41 @@
                     element.asymptomatic_risk_rate[index] = 0;
                 }
             }   
-            var riskData = []
+            riskData = []
             for (let index = 0; index < element.confirmed_risk.length; index++) {
                 riskData[index] = element.confirmed_risk[index] + element.asymptomatic_risk[index];
+            }
+            element.riskData = riskData
+            
+            var riskObj = {
+                name: key,
+                type: 'line',
+                endLabel: {
+                    show: true,
+                    color: 'inherit'
+                },
+                data: element.riskData
+            }
+        
+            allRisk.push(riskObj)
+
+            var totalObj = {
+                name: key,
+                type: 'line',
+                endLabel: {
+                    show: true,
+                    color: 'inherit'
+                },
+                data: element.total
+            }
+        
+            allTotal.push(totalObj)
+
+            areaIndex++
+            
+            if(1 == areaIndex) {
+                shanghaiObj = element
+                continue
             }
 
             var numChartDom = document.getElementById('show_total_' + key);
@@ -233,7 +290,7 @@
                         show: true,
                         color: 'inherit'
                     },
-                    data: riskData
+                    data: element.riskData
                 },
                 {
                     name: '野生确诊',
@@ -258,19 +315,21 @@
                     data: element.asymptomatic_risk
                 }
             ]
-            if (0 == areaIndex) {
-                series.push(
-                    {
-                        name: '出舱',
-                        type: 'bar',
-                        endLabel: {
-                            show: true,
-                            color: 'inherit'
-                        },
-                        data: element.discharged
-                    },
-                )
-            }
+            var grids = [
+                {
+                    left: 45,
+                    right: 45,
+                    top: 100,
+                    height: '35%'
+                }, 
+                {
+                    left: 45,
+                    right: 45,
+                    top: '60%',
+                    height: '35%'
+                }
+            ] 
+            
             var numOption = {
                 title: {
                     text: key
@@ -287,20 +346,7 @@
                 axisPointer: {
                     link: { xAxisIndex: 'all' },
                 },
-                grid: [
-                    {
-                        left: 45,
-                        right: 45,
-                        top: 100,
-                        height: '35%'
-                    }, 
-                    {
-                        left: 45,
-                        right: 45,
-                        top: '60%',
-                        height: '35%'
-                    }
-                ] ,
+                grid: grids,
                 toolbox: {
                     feature: {
                         saveAsImage: { show: true }
@@ -345,33 +391,219 @@
 
             numOption && numChart.setOption(numOption);
 
-            var riskObj = {
-                name: key,
-                type: 'line',
-                endLabel: {
-                    show: true,
-                    color: 'inherit'
-                },
-                data: riskData
-            }
-        
-            allRisk.push(riskObj)
-
-            var totalObj = {
-                name: key,
-                type: 'line',
-                endLabel: {
-                    show: true,
-                    color: 'inherit'
-                },
-                data: element.total
-            }
-        
-            allTotal.push(totalObj)
-
-            areaIndex++
         }
+        // show Shanghai
+        {
+            var numChartDom = document.getElementById('ShanghaiContainer');
+            var numChart = echarts.init(numChartDom);
 
+            var series =  [
+                {
+                    name: '总数',
+                    type: 'line',
+                    endLabel: {
+                        show: true,
+                        color: 'inherit'
+                    },
+                    data: shanghaiObj.total
+                },
+                {
+                    name: '确诊',
+                    type: 'line',
+                    endLabel: {
+                        show: true,
+                        color: 'inherit'
+                    },
+                    data: shanghaiObj.confirmed
+                },
+                {
+                    name: '无症状',
+                    type: 'line',
+                    endLabel: {
+                        show: true,
+                        color: 'inherit'
+                    },
+                    data: shanghaiObj.asymptomatic
+                },
+                {
+                    name: '出舱',
+                    type: 'line',
+                    endLabel: {
+                        show: true,
+                        color: 'inherit'
+                    },
+                    data: shanghaiObj.discharged
+                },
+                {
+                    name: '社会面',
+                    type: 'line',
+                    xAxisIndex: 1,
+                    yAxisIndex: 1,
+                    endLabel: {
+                        show: true,
+                        color: 'inherit'
+                    },
+                    data: shanghaiObj.riskData
+                },
+                {
+                    name: '野生确诊',
+                    type: 'line',
+                    xAxisIndex: 1,
+                    yAxisIndex: 1,
+                    endLabel: {
+                        show: true,
+                        color: 'inherit'
+                    },
+                    data: shanghaiObj.confirmed_risk
+                },
+                {
+                    name: '野生无症状',
+                    type: 'line',
+                    xAxisIndex: 1,
+                    yAxisIndex: 1,
+                    endLabel: {
+                        show: true,
+                        color: 'inherit'
+                    },
+                    data: shanghaiObj.asymptomatic_risk
+                },
+                {
+                    name: '死亡',
+                    type: 'line',
+                    xAxisIndex: 2,
+                    yAxisIndex: 2,
+                    endLabel: {
+                        show: true,
+                        color: 'inherit'
+                    },
+                    data: shanghaiObj.dead
+                },
+                {
+                    name: '重症',
+                    type: 'line',
+                    xAxisIndex: 2,
+                    yAxisIndex: 2,
+                    endLabel: {
+                        show: true,
+                        color: 'inherit'
+                    },
+                    data: shanghaiObj.severe_patient
+                },
+                {
+                    name: '危重症',
+                    type: 'line',
+                    xAxisIndex: 2,
+                    yAxisIndex: 2,
+                    endLabel: {
+                        show: true,
+                        color: 'inherit'
+                    },
+                    data: shanghaiObj.critical_patient
+                },
+                {
+                    name: '累计死亡',
+                    type: 'line',
+                    xAxisIndex: 2,
+                    yAxisIndex: 2,
+                    endLabel: {
+                        show: true,
+                        color: 'inherit'
+                    },
+                    data: shanghaiObj.total_dead
+                },
+            ]
+            var grids = [
+                {
+                    left: 45,
+                    right: 45,
+                    top: 100,
+                    height: 150
+                }, 
+                {
+                    left: 45,
+                    right: 45,
+                    top: 300,
+                    height: 150
+                }
+                , 
+                {
+                    left: 45,
+                    right: 45,
+                    top: 500,
+                    height: 150
+                }
+            ] 
+            var numOption = {
+                title: {
+                    text: '上海市'
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross',
+                        crossStyle: {
+                            color: '#999'
+                        }
+                    }
+                },
+                axisPointer: {
+                    link: { xAxisIndex: 'all' },
+                },
+                grid: grids,
+                toolbox: {
+                    feature: {
+                        saveAsImage: { show: true }
+                    }
+                },
+                legend: {
+                    show: true,
+                    top:30,
+                    padding: [
+                        5,  // 上
+                        30, // 右
+                        5,  // 下
+                        60, // 左
+                    ],
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        name: '日期',
+                        data: daysStr,
+                        gridIndex: 0
+                    },
+                    {
+                        type: 'category',
+                        name: '日期',
+                        data: daysStr,
+                        gridIndex: 1
+                    },
+                    {
+                        type: 'category',
+                        name: '日期',
+                        data: daysStr,
+                        gridIndex: 2
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value',
+                        gridIndex: 0
+                    },
+                    {
+                        type: 'value',
+                        gridIndex: 1
+                    },
+                    {
+                        type: 'value',
+                        gridIndex: 2
+                    }
+                ],
+                series: series
+            };
+
+            numOption && numChart.setOption(numOption);
+        }
         console.log(allRisk)
         
         var riskChartDom = document.getElementById('riskContainer');
