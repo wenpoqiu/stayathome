@@ -37,6 +37,7 @@
 <body>
 
     <div id="showContainer" style="padding: 10px;">
+        <div id="totalContainer" class="BigContainer"></div>
         <div id="riskContainer" class="BigContainer"></div>
     </div>
 
@@ -165,7 +166,9 @@
         }
         //ShowTotalGrid()
 
+        allTotal = []
         allRisk = []
+        
         areaIndex = 0
         for (const key in areaNumbers) {
             const element = areaNumbers[key];
@@ -338,6 +341,19 @@
             }
         
             allRisk.push(riskObj)
+
+            var totalObj = {
+                name: key,
+                type: 'line',
+                endLabel: {
+                    show: true,
+                    color: 'inherit'
+                },
+                data: element.total
+            }
+        
+            allTotal.push(totalObj)
+
             areaIndex++
         }
 
@@ -397,6 +413,61 @@
             series: allRisk
         };
         riskOption && riskChart.setOption(riskOption);
+
+        var totalChartDom = document.getElementById('totalContainer');
+        var totalChart = echarts.init(totalChartDom);
+        var totalOption = {
+            title:{
+                text: '确诊+无症状'
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    crossStyle: {
+                        color: '#999'
+                    }
+                },
+                position:{
+                    top: 180,
+                    left: 70,
+                }
+            },
+            grid: {
+                left: 45,
+                right: 45,
+                top: 150,
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: { show: true }
+                }
+            },
+            legend: {
+                show: true,
+                top:30,
+                padding: [
+                    5,  // 上
+                    30, // 右
+                    5,  // 下
+                    60, // 左
+                ],
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    name: '日期',
+                    data: daysStr,
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                }
+            ],
+            series: allTotal
+        };
+        totalOption && totalChart.setOption(totalOption);
     </script>
 </body>
 
