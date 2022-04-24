@@ -195,6 +195,82 @@
 
             var numChartDom = document.getElementById('show_total_' + key);
             var numChart = echarts.init(numChartDom);
+
+            var series =  [
+                {
+                    name: '总数',
+                    type: 'line',
+                    endLabel: {
+                        show: true,
+                        color: 'inherit'
+                    },
+                    data: element.total
+                },
+                {
+                    name: '确诊',
+                    type: 'line',
+                    endLabel: {
+                        show: true,
+                        color: 'inherit'
+                    },
+                    data: element.confirmed
+                },
+                {
+                    name: '无症状',
+                    type: 'line',
+                    endLabel: {
+                        show: true,
+                        color: 'inherit'
+                    },
+                    data: element.asymptomatic
+                },
+                {
+                    name: '社会面',
+                    type: 'line',
+                    xAxisIndex: 1,
+                    yAxisIndex: 1,
+                    endLabel: {
+                        show: true,
+                        color: 'inherit'
+                    },
+                    data: riskData
+                },
+                {
+                    name: '野生确诊',
+                    type: 'line',
+                    xAxisIndex: 1,
+                    yAxisIndex: 1,
+                    endLabel: {
+                        show: true,
+                        color: 'inherit'
+                    },
+                    data: element.confirmed_risk
+                },
+                {
+                    name: '野生无症状',
+                    type: 'line',
+                    xAxisIndex: 1,
+                    yAxisIndex: 1,
+                    endLabel: {
+                        show: true,
+                        color: 'inherit'
+                    },
+                    data: element.asymptomatic_risk
+                }
+            ]
+            if (0 == areaIndex) {
+                series.push(
+                    {
+                        name: '出舱',
+                        type: 'bar',
+                        endLabel: {
+                            show: true,
+                            color: 'inherit'
+                        },
+                        data: element.discharged
+                    },
+                )
+            }
             var numOption = {
                 title: {
                     text: key
@@ -264,68 +340,7 @@
                         gridIndex: 1
                     }
                 ],
-                series: [
-                    {
-                        name: '总数',
-                        type: 'line',
-                        endLabel: {
-                            show: true,
-                            color: 'inherit'
-                        },
-                        data: element.total
-                    },
-                    {
-                        name: '确诊',
-                        type: 'line',
-                        endLabel: {
-                            show: true,
-                            color: 'inherit'
-                        },
-                        data: element.confirmed
-                    },
-                    {
-                        name: '无症状',
-                        type: 'line',
-                        endLabel: {
-                            show: true,
-                            color: 'inherit'
-                        },
-                        data: element.asymptomatic
-                    },
-                    {
-                        name: '社会面',
-                        type: 'line',
-                        xAxisIndex: 1,
-                        yAxisIndex: 1,
-                        endLabel: {
-                            show: true,
-                            color: 'inherit'
-                        },
-                        data: riskData
-                    },
-                    {
-                        name: '野生确诊',
-                        type: 'line',
-                        xAxisIndex: 1,
-                        yAxisIndex: 1,
-                        endLabel: {
-                            show: true,
-                            color: 'inherit'
-                        },
-                        data: element.confirmed_risk
-                    },
-                    {
-                        name: '野生无症状',
-                        type: 'line',
-                        xAxisIndex: 1,
-                        yAxisIndex: 1,
-                        endLabel: {
-                            show: true,
-                            color: 'inherit'
-                        },
-                        data: element.asymptomatic_risk
-                    }
-                ]
+                series: series
             };
 
             numOption && numChart.setOption(numOption);
