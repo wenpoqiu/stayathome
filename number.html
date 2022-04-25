@@ -13,6 +13,7 @@
             padding: 0;
             margin: 0;
         }
+
         .GridContainer {
             width: 100%;
             height: 1800px;
@@ -26,12 +27,21 @@
             overflow: hidden;
             padding: 20px 5px;
         }
+
+        .SmallContainer {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            padding: 20px 5px;
+        }
+
         .BigContainer {
             width: 100%;
             height: 700px;
             overflow: hidden;
             padding: 20px 5px;
         }
+
         .NumberContainer {
             width: 100%;
             height: 550px;
@@ -44,7 +54,9 @@
 <body>
 
     <div id="showContainer" style="padding: 10px;">
-        <div id="ShanghaiContainer" class="BigContainer"></div>
+        <div id="ShanghaiTotalContainer" class="SmallContainer"></div>
+        <div id="ShanghaiRiskContainer" class="SmallContainer"></div>
+        <div id="ShanghaiPatientContainer" class="SmallContainer"></div>
         <div id="totalContainer" class="BigContainer"></div>
         <div id="riskContainer" class="BigContainer"></div>
     </div>
@@ -103,7 +115,7 @@
             Object.keys(areaNumbers).forEach(function (key) {
                 element = areaNumbers[key]
                 console.log('ShowTotalGrid', key, element)
-                
+
                 grids.push({
                     show: true,
                     borderWidth: 0,
@@ -114,8 +126,8 @@
                 xAxes.push({
                     type: 'category',
                     show: true,
-                    axisTick : {
-                        show : false
+                    axisTick: {
+                        show: false
                     },
                     name: '日期',
                     data: daysStr,
@@ -153,7 +165,7 @@
             grid_num = count + 1
             grids.forEach(function (grid, idx) {
                 console.log('grids', grid, idx)
-                grid.top = 10 + idx* 100;
+                grid.top = 10 + idx * 100;
                 grid.left = 80
                 grid.right = 50
                 grid.height = 60;
@@ -184,7 +196,7 @@
                 yAxis: yAxes,
                 series: series
             };
-            
+
             option && chart.setOption(option);
         }
         //ShowTotalGrid()
@@ -193,7 +205,7 @@
         allRisk = []
         shanghaiObj = null
         areaIndex = 0
-        
+
 
         for (const key in areaNumbers) {
             const element = areaNumbers[key];
@@ -212,13 +224,13 @@
                 } else {
                     element.asymptomatic_risk_rate[index] = 0;
                 }
-            }   
+            }
             riskData = []
             for (let index = 0; index < element.confirmed_risk.length; index++) {
                 riskData[index] = element.confirmed_risk[index] + element.asymptomatic_risk[index];
             }
             element.riskData = riskData
-            
+
             var riskObj = {
                 name: key,
                 type: 'line',
@@ -228,7 +240,7 @@
                 },
                 data: element.riskData
             }
-        
+
             allRisk.push(riskObj)
 
             var totalObj = {
@@ -240,12 +252,12 @@
                 },
                 data: element.total
             }
-        
+
             allTotal.push(totalObj)
 
             areaIndex++
-            
-            if(1 == areaIndex) {
+
+            if (1 == areaIndex) {
                 shanghaiObj = element
                 continue
             }
@@ -253,7 +265,7 @@
             var numChartDom = document.getElementById('show_total_' + key);
             var numChart = echarts.init(numChartDom);
 
-            var series =  [
+            var series = [
                 {
                     name: '总数',
                     type: 'line',
@@ -321,15 +333,15 @@
                     right: 45,
                     top: 100,
                     height: '35%'
-                }, 
+                },
                 {
                     left: 45,
                     right: 45,
                     top: '60%',
                     height: '35%'
                 }
-            ] 
-            
+            ]
+
             var numOption = {
                 title: {
                     text: key
@@ -354,7 +366,7 @@
                 },
                 legend: {
                     show: true,
-                    top:30,
+                    top: 30,
                     padding: [
                         5,  // 上
                         30, // 右
@@ -393,149 +405,150 @@
 
         }
         // show Shanghai
-        {
-            var numChartDom = document.getElementById('ShanghaiContainer');
-            var numChart = echarts.init(numChartDom);
+        //<div id="ShanghaiTotalContainer" class="SmallContainer"></div>
+        //<div id="ShanghaiRiskContainer" class="SmallContainer"></div>
+        //<div id="ShanghaiPatientContainer" class="SmallContainer"></div>
+        function showShanghai(domIndex) {
+            var domName = ''
+            var title = ''
+            var series = null
 
-            var series =  [
-                {
-                    name: '总数',
-                    type: 'line',
-                    endLabel: {
-                        show: true,
-                        color: 'inherit'
-                    },
-                    data: shanghaiObj.total
-                },
-                {
-                    name: '确诊',
-                    type: 'line',
-                    endLabel: {
-                        show: true,
-                        color: 'inherit'
-                    },
-                    data: shanghaiObj.confirmed
-                },
-                {
-                    name: '无症状',
-                    type: 'line',
-                    endLabel: {
-                        show: true,
-                        color: 'inherit'
-                    },
-                    data: shanghaiObj.asymptomatic
-                },
-                {
-                    name: '出舱',
-                    type: 'line',
-                    endLabel: {
-                        show: true,
-                        color: 'inherit'
-                    },
-                    data: shanghaiObj.discharged
-                },
-                {
-                    name: '社会面',
-                    type: 'line',
-                    xAxisIndex: 1,
-                    yAxisIndex: 1,
-                    endLabel: {
-                        show: true,
-                        color: 'inherit'
-                    },
-                    data: shanghaiObj.riskData
-                },
-                {
-                    name: '野生确诊',
-                    type: 'line',
-                    xAxisIndex: 1,
-                    yAxisIndex: 1,
-                    endLabel: {
-                        show: true,
-                        color: 'inherit'
-                    },
-                    data: shanghaiObj.confirmed_risk
-                },
-                {
-                    name: '野生无症状',
-                    type: 'line',
-                    xAxisIndex: 1,
-                    yAxisIndex: 1,
-                    endLabel: {
-                        show: true,
-                        color: 'inherit'
-                    },
-                    data: shanghaiObj.asymptomatic_risk
-                },
-                {
-                    name: '死亡',
-                    type: 'line',
-                    xAxisIndex: 2,
-                    yAxisIndex: 2,
-                    endLabel: {
-                        show: true,
-                        color: 'inherit'
-                    },
-                    data: shanghaiObj.dead
-                },
-                {
-                    name: '重症',
-                    type: 'line',
-                    xAxisIndex: 2,
-                    yAxisIndex: 2,
-                    endLabel: {
-                        show: true,
-                        color: 'inherit'
-                    },
-                    data: shanghaiObj.severe_patient
-                },
-                {
-                    name: '危重症',
-                    type: 'line',
-                    xAxisIndex: 2,
-                    yAxisIndex: 2,
-                    endLabel: {
-                        show: true,
-                        color: 'inherit'
-                    },
-                    data: shanghaiObj.critical_patient
-                },
-                {
-                    name: '累计死亡',
-                    type: 'line',
-                    xAxisIndex: 2,
-                    yAxisIndex: 2,
-                    endLabel: {
-                        show: true,
-                        color: 'inherit'
-                    },
-                    data: shanghaiObj.total_dead
-                },
-            ]
+            switch (domIndex) {
+                case 0:
+                    domName = 'ShanghaiTotalContainer'
+                    title = '上海市'
+                    series = [
+                        {
+                            name: '总数',
+                            type: 'line',
+                            endLabel: {
+                                show: true,
+                                color: 'inherit'
+                            },
+                            data: shanghaiObj.total
+                        },
+                        {
+                            name: '确诊',
+                            type: 'line',
+                            endLabel: {
+                                show: true,
+                                color: 'inherit'
+                            },
+                            data: shanghaiObj.confirmed
+                        },
+                        {
+                            name: '无症状',
+                            type: 'line',
+                            endLabel: {
+                                show: true,
+                                color: 'inherit'
+                            },
+                            data: shanghaiObj.asymptomatic
+                        },
+                        {
+                            name: '出舱',
+                            type: 'line',
+                            endLabel: {
+                                show: true,
+                                color: 'inherit'
+                            },
+                            data: shanghaiObj.discharged
+                        }
+                    ]
+                    break;
+                case 1:
+                    domName = 'ShanghaiRiskContainer'
+                    title = '社会面'
+                    series = [
+                        
+                        {
+                            name: '社会面',
+                            type: 'line',
+                            endLabel: {
+                                show: true,
+                                color: 'inherit'
+                            },
+                            data: shanghaiObj.riskData
+                        },
+                        {
+                            name: '野生确诊',
+                            type: 'line',
+                            endLabel: {
+                                show: true,
+                                color: 'inherit'
+                            },
+                            data: shanghaiObj.confirmed_risk
+                        },
+                        {
+                            name: '野生无症状',
+                            type: 'line',
+                            endLabel: {
+                                show: true,
+                                color: 'inherit'
+                            },
+                            data: shanghaiObj.asymptomatic_risk
+                        }
+                    ]
+                    break;
+                case 2:
+                    domName = 'ShanghaiPatientContainer'
+                    title = '危重症/死亡'
+                    series = [
+                        {
+                            name: '重症',
+                            type: 'line',
+                            endLabel: {
+                                show: true,
+                                color: 'inherit'
+                            },
+                            data: shanghaiObj.severe_patient
+                        },
+                        {
+                            name: '危重症',
+                            type: 'line',
+                            endLabel: {
+                                show: true,
+                                color: 'inherit'
+                            },
+                            data: shanghaiObj.critical_patient
+                        },
+                        {
+                            name: '死亡',
+                            type: 'line',
+                            endLabel: {
+                                show: true,
+                                color: 'inherit'
+                            },
+                            data: shanghaiObj.dead
+                        },
+                        {
+                            name: '累计死亡',
+                            type: 'line',
+                            endLabel: {
+                                show: true,
+                                color: 'inherit'
+                            },
+                            data: shanghaiObj.total_dead
+                        },
+                    ]
+                    break
+                default:
+                    return;
+            }
+
+            var numChartDom = document.getElementById(domName);
+            var numChart = echarts.init(numChartDom);
             var grids = [
                 {
                     left: 45,
                     right: 45,
-                    top: 100,
+                    top: 50,
                     height: 150
-                }, 
-                {
-                    left: 45,
-                    right: 45,
-                    top: 300,
-                    height: 150
-                }
-                , 
-                {
-                    left: 45,
-                    right: 45,
-                    top: 500,
-                    height: 150
-                }
-            ] 
+                },
+            ]
             var numOption = {
                 title: {
-                    text: '上海市'
+                    text: title
                 },
                 tooltip: {
                     trigger: 'axis',
@@ -545,10 +558,6 @@
                             color: '#999'
                         }
                     },
-                    position:{
-                        top: 180,
-                        left: 20,
-                    }
                 },
                 axisPointer: {
                     link: { xAxisIndex: 'all' },
@@ -561,7 +570,7 @@
                 },
                 legend: {
                     show: true,
-                    top:25,
+                    top: 15,
                     padding: [
                         5,  // 上
                         30, // 右
@@ -574,33 +583,11 @@
                         type: 'category',
                         name: '日期',
                         data: daysStr,
-                        gridIndex: 0
-                    },
-                    {
-                        type: 'category',
-                        name: '日期',
-                        data: daysStr,
-                        gridIndex: 1
-                    },
-                    {
-                        type: 'category',
-                        name: '日期',
-                        data: daysStr,
-                        gridIndex: 2
                     }
                 ],
                 yAxis: [
                     {
                         type: 'value',
-                        gridIndex: 0
-                    },
-                    {
-                        type: 'value',
-                        gridIndex: 1
-                    },
-                    {
-                        type: 'value',
-                        gridIndex: 2
                     }
                 ],
                 series: series
@@ -608,12 +595,16 @@
 
             numOption && numChart.setOption(numOption);
         }
+
+        showShanghai(0)
+        showShanghai(1)
+        showShanghai(2)
         console.log(allRisk)
-        
+
         var riskChartDom = document.getElementById('riskContainer');
         var riskChart = echarts.init(riskChartDom);
         var riskOption = {
-            title:{
+            title: {
                 text: '社会面'
             },
             tooltip: {
@@ -624,7 +615,7 @@
                         color: '#999'
                     }
                 },
-                position:{
+                position: {
                     top: 180,
                     left: 20,
                 }
@@ -641,7 +632,7 @@
             },
             legend: {
                 show: true,
-                top:30,
+                top: 30,
                 padding: [
                     5,  // 上
                     30, // 右
@@ -668,7 +659,7 @@
         var totalChartDom = document.getElementById('totalContainer');
         var totalChart = echarts.init(totalChartDom);
         var totalOption = {
-            title:{
+            title: {
                 text: '确诊+无症状'
             },
             tooltip: {
@@ -679,7 +670,7 @@
                         color: '#999'
                     }
                 },
-                position:{
+                position: {
                     top: 180,
                     left: 20,
                 }
@@ -696,7 +687,7 @@
             },
             legend: {
                 show: true,
-                top:30,
+                top: 30,
                 padding: [
                     5,  // 上
                     30, // 右
