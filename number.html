@@ -37,7 +37,7 @@
 
         .NumberContainer {
             width: 100%;
-            height: 550px;
+            height: 600px;
             overflow: hidden;
             padding: 20px 5px;
         }
@@ -197,7 +197,15 @@
         shanghaiObj = null
         areaIndex = 0
 
-
+        var endLabel = {
+            show: true,
+            color: 'inherit',
+            lineHeight: 15,
+            formatter: '{a}: {@score}',
+        }
+        var gridRight = 90
+        var nameLocation = 'middle'
+        var nameGap = 25    
         for (const key in areaNumbers) {
             const element = areaNumbers[key];
             element.confirmed_risk_rate = []
@@ -225,12 +233,9 @@
             var riskObj = {
                 name: key,
                 type: 'line',
-                endLabel: {
-                    show: true,
-                    color: 'inherit'
-                },
+                endLabel: endLabel,
                 labelLayout: {
-                    moveOverlap: 'shiftY',
+                    hideOverlap: true,
                 },
                 data: element.riskData
             }
@@ -240,12 +245,9 @@
             var totalObj = {
                 name: key,
                 type: 'line',
-                endLabel: {
-                    show: true,
-                    color: 'inherit'
-                },
+                endLabel: endLabel,
                 labelLayout: {
-                    moveOverlap: 'shiftY',
+                    hideOverlap: true,
                 },
                 data: element.total
             }
@@ -266,10 +268,7 @@
                 {
                     name: '总数',
                     type: 'line',
-                    endLabel: {
-                        show: true,
-                        color: 'inherit'
-                    },
+                    endLabel: endLabel,
                     labelLayout: {
                         moveOverlap: 'shiftY',
                     },
@@ -278,10 +277,7 @@
                 {
                     name: '确诊',
                     type: 'line',
-                    endLabel: {
-                        show: true,
-                        color: 'inherit'
-                    },
+                    endLabel: endLabel,
                     labelLayout: {
                         moveOverlap: 'shiftY',
                     },
@@ -290,10 +286,7 @@
                 {
                     name: '无症状',
                     type: 'line',
-                    endLabel: {
-                        show: true,
-                        color: 'inherit'
-                    },
+                    endLabel: endLabel,
                     labelLayout: {
                         moveOverlap: 'shiftY',
                     },
@@ -304,10 +297,7 @@
                     type: 'line',
                     xAxisIndex: 1,
                     yAxisIndex: 1,
-                    endLabel: {
-                        show: true,
-                        color: 'inherit'
-                    },
+                    endLabel: endLabel,
                     labelLayout: {
                         moveOverlap: 'shiftY',
                     },
@@ -318,10 +308,7 @@
                     type: 'line',
                     xAxisIndex: 1,
                     yAxisIndex: 1,
-                    endLabel: {
-                        show: true,
-                        color: 'inherit'
-                    },
+                    endLabel: endLabel,
                     labelLayout: {
                         moveOverlap: 'shiftY',
                     },
@@ -332,10 +319,7 @@
                     type: 'line',
                     xAxisIndex: 1,
                     yAxisIndex: 1,
-                    endLabel: {
-                        show: true,
-                        color: 'inherit'
-                    },
+                    endLabel: endLabel,
                     labelLayout: {
                         moveOverlap: 'shiftY',
                     },
@@ -345,15 +329,15 @@
             var grids = [
                 {
                     left: 45,
-                    right: 45,
+                    right: gridRight,
                     top: 100,
-                    height: '35%'
+                    height: 200
                 },
                 {
                     left: 45,
-                    right: 45,
+                    right: gridRight,
                     top: '60%',
-                    height: '35%'
+                    height: 200
                 }
             ]
 
@@ -393,12 +377,18 @@
                     {
                         type: 'category',
                         name: '日期',
+                        nameLocation: nameLocation,
+                        nameGap:nameGap,
+                        position: 'bottom',
                         data: daysStr,
                         gridIndex: 0
                     },
                     {
                         type: 'category',
                         name: '日期',
+                        nameLocation: nameLocation, 
+                        nameGap:nameGap,
+                        position: 'bottom',
                         data: daysStr,
                         gridIndex: 1
                     }
@@ -428,10 +418,7 @@
                 {
                     name: '总数',
                     type: 'line',
-                    endLabel: {
-                        show: true,
-                        color: 'inherit'
-                    },
+                    endLabel: endLabel,
                     labelLayout: {
                         moveOverlap: 'shiftY',
                     },
@@ -440,10 +427,7 @@
                 {
                     name: '确诊',
                     type: 'line',
-                    endLabel: {
-                        show: true,
-                        color: 'inherit'
-                    },
+                    endLabel: endLabel,
                     labelLayout: {
                         moveOverlap: 'shiftY',
                     },
@@ -452,10 +436,7 @@
                 {
                     name: '无症状',
                     type: 'line',
-                    endLabel: {
-                        show: true,
-                        color: 'inherit'
-                    },
+                    endLabel: endLabel,
                     labelLayout: {
                         moveOverlap: 'shiftY',
                     },
@@ -464,10 +445,7 @@
                 {
                     name: '出舱',
                     type: 'line',
-                    endLabel: {
-                        show: true,
-                        color: 'inherit'
-                    },
+                    endLabel: endLabel,
                     labelLayout: {
                         moveOverlap: 'shiftY',
                     },
@@ -478,10 +456,7 @@
                     type: 'line',
                     xAxisIndex: 1,
                     yAxisIndex: 1,
-                    endLabel: {
-                        show: true,
-                        color: 'inherit'
-                    },
+                    endLabel: endLabel,
                     labelLayout: {
                         moveOverlap: 'shiftY',
                     },
@@ -492,10 +467,7 @@
                     type: 'line',
                     xAxisIndex: 1,
                     yAxisIndex: 1,
-                    endLabel: {
-                        show: true,
-                        color: 'inherit'
-                    },
+                    endLabel: endLabel,
                     labelLayout: {
                         moveOverlap: 'shiftY',
                     },
@@ -506,10 +478,7 @@
                     type: 'line',
                     xAxisIndex: 1,
                     yAxisIndex: 1,
-                    endLabel: {
-                        show: true,
-                        color: 'inherit'
-                    },
+                    endLabel: endLabel,
                     labelLayout: {
                         moveOverlap: 'shiftY',
                     },
@@ -520,10 +489,7 @@
                     type: 'line',
                     xAxisIndex: 2,
                     yAxisIndex: 2,
-                    endLabel: {
-                        show: true,
-                        color: 'inherit'
-                    },
+                    endLabel: endLabel,
                     labelLayout: {
                         moveOverlap: 'shiftY',
                     },
@@ -534,10 +500,7 @@
                     type: 'line',
                     xAxisIndex: 2,
                     yAxisIndex: 2,
-                    endLabel: {
-                        show: true,
-                        color: 'inherit'
-                    },
+                    endLabel: endLabel,
                     labelLayout: {
                         moveOverlap: 'shiftY',
                     },
@@ -548,10 +511,7 @@
                     type: 'line',
                     xAxisIndex: 2,
                     yAxisIndex: 2,
-                    endLabel: {
-                        show: true,
-                        color: 'inherit'
-                    },
+                    endLabel: endLabel,
                     labelLayout: {
                         moveOverlap: 'shiftY',
                     },
@@ -562,10 +522,7 @@
                     type: 'line',
                     xAxisIndex: 2,
                     yAxisIndex: 2,
-                    endLabel: {
-                        show: true,
-                        color: 'inherit'
-                    },
+                    endLabel: endLabel,
                     labelLayout: {
                         moveOverlap: 'shiftY',
                     },
@@ -575,20 +532,20 @@
             var grids = [
                 {
                     left: 45,
-                    right: 45,
+                    right: gridRight,
                     top: 100,
                     height: 150
                 },
                 {
                     left: 45,
-                    right: 45,
+                    right: gridRight,
                     top: 300,
                     height: 150
                 }
                 ,
                 {
                     left: 45,
-                    right: 45,
+                    right: gridRight,
                     top: 500,
                     height: 150
                 }
@@ -633,18 +590,27 @@
                     {
                         type: 'category',
                         name: '日期',
+                        nameLocation: nameLocation, 
+                        nameGap:nameGap,
+                        position: 'bottom',
                         data: daysStr,
                         gridIndex: 0
                     },
                     {
                         type: 'category',
                         name: '日期',
+                        nameLocation: nameLocation, 
+                        nameGap:nameGap,
+                        position: 'bottom',
                         data: daysStr,
                         gridIndex: 1
                     },
                     {
                         type: 'category',
                         name: '日期',
+                        nameLocation: nameLocation, 
+                        nameGap:nameGap,
+                        position: 'bottom',
                         data: daysStr,
                         gridIndex: 2
                     }
@@ -691,7 +657,7 @@
             },
             grid: {
                 left: 45,
-                right: 45,
+                right: gridRight,
                 top: 150,
             },
             toolbox: {
@@ -713,6 +679,9 @@
                 {
                     type: 'category',
                     name: '日期',
+                    nameLocation: nameLocation, 
+                    nameGap:nameGap,
+                    position: 'bottom',
                     data: daysStr,
                 }
             ],
@@ -746,7 +715,7 @@
             },
             grid: {
                 left: 45,
-                right: 45,
+                right: gridRight,
                 top: 150,
             },
             toolbox: {
@@ -768,6 +737,9 @@
                 {
                     type: 'category',
                     name: '日期',
+                    nameLocation: nameLocation,
+                    nameGap:nameGap,
+                    position: 'bottom',
                     data: daysStr,
                 }
             ],
