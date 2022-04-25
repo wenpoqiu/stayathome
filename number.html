@@ -28,13 +28,6 @@
             padding: 20px 5px;
         }
 
-        .SmallContainer {
-            width: 100%;
-            height: 200px;
-            overflow: hidden;
-            padding: 20px 5px;
-        }
-
         .BigContainer {
             width: 100%;
             height: 700px;
@@ -54,9 +47,7 @@
 <body>
 
     <div id="showContainer" style="padding: 10px;">
-        <div id="ShanghaiTotalContainer" class="SmallContainer" style="padding-bottom: 0px"></div>
-        <div id="ShanghaiRiskContainer" class="SmallContainer" style="padding-bottom: 0px"></div>
-        <div id="ShanghaiPatientContainer" class="SmallContainer"></div>
+        <div id="ShanghaiContainer" class="BigContainer"></div>
         <div id="totalContainer" class="BigContainer"></div>
         <div id="riskContainer" class="BigContainer"></div>
     </div>
@@ -405,150 +396,149 @@
 
         }
         // show Shanghai
-        //<div id="ShanghaiTotalContainer" class="SmallContainer"></div>
-        //<div id="ShanghaiRiskContainer" class="SmallContainer"></div>
-        //<div id="ShanghaiPatientContainer" class="SmallContainer"></div>
-        function showShanghai(domIndex) {
-            var domName = ''
-            var title = ''
-            var series = null
-
-            switch (domIndex) {
-                case 0:
-                    domName = 'ShanghaiTotalContainer'
-                    title = '上海市'
-                    series = [
-                        {
-                            name: '总数',
-                            type: 'line',
-                            endLabel: {
-                                show: true,
-                                color: 'inherit'
-                            },
-                            data: shanghaiObj.total
-                        },
-                        {
-                            name: '确诊',
-                            type: 'line',
-                            endLabel: {
-                                show: true,
-                                color: 'inherit'
-                            },
-                            data: shanghaiObj.confirmed
-                        },
-                        {
-                            name: '无症状',
-                            type: 'line',
-                            endLabel: {
-                                show: true,
-                                color: 'inherit'
-                            },
-                            data: shanghaiObj.asymptomatic
-                        },
-                        {
-                            name: '出舱',
-                            type: 'line',
-                            endLabel: {
-                                show: true,
-                                color: 'inherit'
-                            },
-                            data: shanghaiObj.discharged
-                        }
-                    ]
-                    break;
-                case 1:
-                    domName = 'ShanghaiRiskContainer'
-                    title = '社会面'
-                    series = [
-                        
-                        {
-                            name: '社会面',
-                            type: 'line',
-                            endLabel: {
-                                show: true,
-                                color: 'inherit'
-                            },
-                            data: shanghaiObj.riskData
-                        },
-                        {
-                            name: '野生确诊',
-                            type: 'line',
-                            endLabel: {
-                                show: true,
-                                color: 'inherit'
-                            },
-                            data: shanghaiObj.confirmed_risk
-                        },
-                        {
-                            name: '野生无症状',
-                            type: 'line',
-                            endLabel: {
-                                show: true,
-                                color: 'inherit'
-                            },
-                            data: shanghaiObj.asymptomatic_risk
-                        }
-                    ]
-                    break;
-                case 2:
-                    domName = 'ShanghaiPatientContainer'
-                    title = '危重症/死亡'
-                    series = [
-                        {
-                            name: '重症',
-                            type: 'line',
-                            endLabel: {
-                                show: true,
-                                color: 'inherit'
-                            },
-                            data: shanghaiObj.severe_patient
-                        },
-                        {
-                            name: '危重症',
-                            type: 'line',
-                            endLabel: {
-                                show: true,
-                                color: 'inherit'
-                            },
-                            data: shanghaiObj.critical_patient
-                        },
-                        {
-                            name: '死亡',
-                            type: 'line',
-                            endLabel: {
-                                show: true,
-                                color: 'inherit'
-                            },
-                            data: shanghaiObj.dead
-                        },
-                        {
-                            name: '累计死亡',
-                            type: 'line',
-                            endLabel: {
-                                show: true,
-                                color: 'inherit'
-                            },
-                            data: shanghaiObj.total_dead
-                        },
-                    ]
-                    break
-                default:
-                    return;
-            }
-
-            var numChartDom = document.getElementById(domName);
+        {
+            var numChartDom = document.getElementById('ShanghaiContainer');
             var numChart = echarts.init(numChartDom);
+
+            var series = [
+                {
+                    name: '总数',
+                    type: 'line',
+                    endLabel: {
+                        show: true,
+                        color: 'inherit'
+                    },
+                    data: shanghaiObj.total
+                },
+                {
+                    name: '确诊',
+                    type: 'line',
+                    endLabel: {
+                        show: true,
+                        color: 'inherit'
+                    },
+                    data: shanghaiObj.confirmed
+                },
+                {
+                    name: '无症状',
+                    type: 'line',
+                    endLabel: {
+                        show: true,
+                        color: 'inherit'
+                    },
+                    data: shanghaiObj.asymptomatic
+                },
+                {
+                    name: '出舱',
+                    type: 'line',
+                    endLabel: {
+                        show: true,
+                        color: 'inherit'
+                    },
+                    data: shanghaiObj.discharged
+                },
+                {
+                    name: '社会面',
+                    type: 'line',
+                    xAxisIndex: 1,
+                    yAxisIndex: 1,
+                    endLabel: {
+                        show: true,
+                        color: 'inherit'
+                    },
+                    data: shanghaiObj.riskData
+                },
+                {
+                    name: '野生确诊',
+                    type: 'line',
+                    xAxisIndex: 1,
+                    yAxisIndex: 1,
+                    endLabel: {
+                        show: true,
+                        color: 'inherit'
+                    },
+                    data: shanghaiObj.confirmed_risk
+                },
+                {
+                    name: '野生无症状',
+                    type: 'line',
+                    xAxisIndex: 1,
+                    yAxisIndex: 1,
+                    endLabel: {
+                        show: true,
+                        color: 'inherit'
+                    },
+                    data: shanghaiObj.asymptomatic_risk
+                },
+                {
+                    name: '死亡',
+                    type: 'line',
+                    xAxisIndex: 2,
+                    yAxisIndex: 2,
+                    endLabel: {
+                        show: true,
+                        color: 'inherit'
+                    },
+                    data: shanghaiObj.dead
+                },
+                {
+                    name: '重症',
+                    type: 'line',
+                    xAxisIndex: 2,
+                    yAxisIndex: 2,
+                    endLabel: {
+                        show: true,
+                        color: 'inherit'
+                    },
+                    data: shanghaiObj.severe_patient
+                },
+                {
+                    name: '危重症',
+                    type: 'line',
+                    xAxisIndex: 2,
+                    yAxisIndex: 2,
+                    endLabel: {
+                        show: true,
+                        color: 'inherit'
+                    },
+                    data: shanghaiObj.critical_patient
+                },
+                {
+                    name: '累计死亡',
+                    type: 'line',
+                    xAxisIndex: 2,
+                    yAxisIndex: 2,
+                    endLabel: {
+                        show: true,
+                        color: 'inherit'
+                    },
+                    data: shanghaiObj.total_dead
+                },
+            ]
             var grids = [
                 {
                     left: 45,
                     right: 45,
-                    top: 60,
-                    height: 120
+                    top: 100,
+                    height: 150
                 },
+                {
+                    left: 45,
+                    right: 45,
+                    top: 300,
+                    height: 150
+                }
+                ,
+                {
+                    left: 45,
+                    right: 45,
+                    top: 500,
+                    height: 150
+                }
             ]
             var numOption = {
                 title: {
-                    text: title
+                    text: '上海市'
                 },
                 tooltip: {
                     trigger: 'axis',
@@ -558,6 +548,10 @@
                             color: '#999'
                         }
                     },
+                    position: {
+                        top: 180,
+                        left: 50,
+                    }
                 },
                 axisPointer: {
                     link: { xAxisIndex: 'all' },
@@ -570,7 +564,7 @@
                 },
                 legend: {
                     show: true,
-                    top: 30,
+                    top: 25,
                     padding: [
                         5,  // 上
                         30, // 右
@@ -583,11 +577,33 @@
                         type: 'category',
                         name: '日期',
                         data: daysStr,
+                        gridIndex: 0
+                    },
+                    {
+                        type: 'category',
+                        name: '日期',
+                        data: daysStr,
+                        gridIndex: 1
+                    },
+                    {
+                        type: 'category',
+                        name: '日期',
+                        data: daysStr,
+                        gridIndex: 2
                     }
                 ],
                 yAxis: [
                     {
                         type: 'value',
+                        gridIndex: 0
+                    },
+                    {
+                        type: 'value',
+                        gridIndex: 1
+                    },
+                    {
+                        type: 'value',
+                        gridIndex: 2
                     }
                 ],
                 series: series
@@ -595,10 +611,6 @@
 
             numOption && numChart.setOption(numOption);
         }
-
-        showShanghai(0)
-        showShanghai(1)
-        showShanghai(2)
         console.log(allRisk)
 
         var riskChartDom = document.getElementById('riskContainer');
@@ -617,7 +629,7 @@
                 },
                 position: {
                     top: 180,
-                    left: 20,
+                    left: 50,
                 }
             },
             grid: {
@@ -672,7 +684,7 @@
                 },
                 position: {
                     top: 180,
-                    left: 20,
+                    left: 50,
                 }
             },
             grid: {
