@@ -202,6 +202,7 @@
             color: 'inherit',
             lineHeight: 15,
             formatter: '{a}: {@score}',
+            offset: [5, 0],
         }
         var gridRight = 90
         var nameLocation = 'middle'
@@ -552,7 +553,7 @@
             ]
             var numOption = {
                 title: {
-                    text: '上海市'
+                    text: '上海市'+'(至'+toDateString(number.endDate)+'24时)'
                 },
                 tooltip: {
                     trigger: 'axis',
