@@ -134,7 +134,7 @@
                 });
                 series.push({
                     name: key,
-                    type: 'line',
+                    type: 'line',smooth:true,
                     endLabel: {
                         show: true,
                         color: 'inherit'
@@ -204,7 +204,7 @@
             formatter: '{a}: {@score}',
             offset: [5, 0],
         }
-        var gridRight = 90
+        var gridRight = 95
         var nameLocation = 'middle'
         var nameGap = 25    
         for (const key in areaNumbers) {
@@ -233,7 +233,7 @@
 
             var riskObj = {
                 name: key,
-                type: 'line',
+                type: 'line',smooth:true,
                 endLabel: endLabel,
                 labelLayout: {
                     hideOverlap: true,
@@ -245,7 +245,7 @@
 
             var totalObj = {
                 name: key,
-                type: 'line',
+                type: 'line',smooth:true,
                 endLabel: endLabel,
                 labelLayout: {
                     hideOverlap: true,
@@ -268,7 +268,7 @@
             var series = [
                 {
                     name: '总数',
-                    type: 'line',
+                    type: 'line',smooth:true,
                     endLabel: endLabel,
                     labelLayout: {
                         moveOverlap: 'shiftY',
@@ -277,7 +277,7 @@
                 },
                 {
                     name: '确诊',
-                    type: 'line',
+                    type: 'line',smooth:true,
                     endLabel: endLabel,
                     labelLayout: {
                         moveOverlap: 'shiftY',
@@ -286,7 +286,7 @@
                 },
                 {
                     name: '无症状',
-                    type: 'line',
+                    type: 'line',smooth:true,
                     endLabel: endLabel,
                     labelLayout: {
                         moveOverlap: 'shiftY',
@@ -295,7 +295,7 @@
                 },
                 {
                     name: '社会面',
-                    type: 'line',
+                    type: 'line',smooth:true,
                     xAxisIndex: 1,
                     yAxisIndex: 1,
                     endLabel: endLabel,
@@ -306,7 +306,7 @@
                 },
                 {
                     name: '野生确诊',
-                    type: 'line',
+                    type: 'line',smooth:true,
                     xAxisIndex: 1,
                     yAxisIndex: 1,
                     endLabel: endLabel,
@@ -317,7 +317,7 @@
                 },
                 {
                     name: '野生无症状',
-                    type: 'line',
+                    type: 'line',smooth:true,
                     xAxisIndex: 1,
                     yAxisIndex: 1,
                     endLabel: endLabel,
@@ -418,7 +418,7 @@
             var series = [
                 {
                     name: '总数',
-                    type: 'line',
+                    type: 'line',smooth:true,
                     endLabel: endLabel,
                     labelLayout: {
                         moveOverlap: 'shiftY',
@@ -427,7 +427,7 @@
                 },
                 {
                     name: '确诊',
-                    type: 'line',
+                    type: 'line',smooth:true,
                     endLabel: endLabel,
                     labelLayout: {
                         moveOverlap: 'shiftY',
@@ -436,7 +436,7 @@
                 },
                 {
                     name: '无症状',
-                    type: 'line',
+                    type: 'line',smooth:true,
                     endLabel: endLabel,
                     labelLayout: {
                         moveOverlap: 'shiftY',
@@ -445,7 +445,7 @@
                 },
                 {
                     name: '出舱',
-                    type: 'line',
+                    type: 'line',smooth:true,
                     endLabel: endLabel,
                     labelLayout: {
                         moveOverlap: 'shiftY',
@@ -454,7 +454,7 @@
                 },
                 {
                     name: '社会面',
-                    type: 'line',
+                    type: 'line',smooth:true,
                     xAxisIndex: 1,
                     yAxisIndex: 1,
                     endLabel: endLabel,
@@ -465,7 +465,7 @@
                 },
                 {
                     name: '野生确诊',
-                    type: 'line',
+                    type: 'line',smooth:true,
                     xAxisIndex: 1,
                     yAxisIndex: 1,
                     endLabel: endLabel,
@@ -476,7 +476,7 @@
                 },
                 {
                     name: '野生无症状',
-                    type: 'line',
+                    type: 'line',smooth:true,
                     xAxisIndex: 1,
                     yAxisIndex: 1,
                     endLabel: endLabel,
@@ -487,7 +487,7 @@
                 },
                 {
                     name: '死亡',
-                    type: 'line',
+                    type: 'line',smooth:true,
                     xAxisIndex: 2,
                     yAxisIndex: 2,
                     endLabel: endLabel,
@@ -498,7 +498,7 @@
                 },
                 {
                     name: '重症',
-                    type: 'line',
+                    type: 'line',smooth:true,
                     xAxisIndex: 2,
                     yAxisIndex: 2,
                     endLabel: endLabel,
@@ -509,7 +509,7 @@
                 },
                 {
                     name: '危重症',
-                    type: 'line',
+                    type: 'line',smooth:true,
                     xAxisIndex: 2,
                     yAxisIndex: 2,
                     endLabel: endLabel,
@@ -520,7 +520,7 @@
                 },
                 {
                     name: '累计死亡',
-                    type: 'line',
+                    type: 'line',smooth:true,
                     xAxisIndex: 2,
                     yAxisIndex: 2,
                     endLabel: endLabel,
