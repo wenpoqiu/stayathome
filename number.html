@@ -85,6 +85,16 @@
             var d = dateObj.getDate()
             return m + '-' + d
         }
+        function toZhDateString(date) {
+            var dateStr = '' + date
+            dateStr = dateStr.slice(0, 4) + '-' + dateStr.slice(4);
+            dateStr = dateStr.slice(0, 7) + '-' + dateStr.slice(7);
+            var dateObj = new Date(dateStr)
+            var y = dateObj.getFullYear()
+            var m = dateObj.getMonth() + 1
+            var d = dateObj.getDate()
+            return m + '月' + d + '日'
+        }
         document.title = "Stay at Home | 数据统计(" + toDateString(number.endDate) + ')'
         var daysStr = []
         number.date.forEach(function (key, value) {
@@ -134,7 +144,7 @@
                 });
                 series.push({
                     name: key,
-                    type: 'line',smooth:true,
+                    type: 'line', smooth: true,
                     endLabel: {
                         show: true,
                         color: 'inherit'
@@ -206,7 +216,7 @@
         }
         var gridRight = 95
         var nameLocation = 'middle'
-        var nameGap = 25    
+        var nameGap = 25
         for (const key in areaNumbers) {
             const element = areaNumbers[key];
             element.confirmed_risk_rate = []
@@ -233,7 +243,7 @@
 
             var riskObj = {
                 name: key,
-                type: 'line',smooth:true,
+                type: 'line', smooth: true,
                 endLabel: endLabel,
                 labelLayout: {
                     hideOverlap: true,
@@ -245,7 +255,7 @@
 
             var totalObj = {
                 name: key,
-                type: 'line',smooth:true,
+                type: 'line', smooth: true,
                 endLabel: endLabel,
                 labelLayout: {
                     hideOverlap: true,
@@ -268,7 +278,7 @@
             var series = [
                 {
                     name: '总数',
-                    type: 'line',smooth:true,
+                    type: 'line', smooth: true,
                     endLabel: endLabel,
                     labelLayout: {
                         moveOverlap: 'shiftY',
@@ -277,7 +287,7 @@
                 },
                 {
                     name: '确诊',
-                    type: 'line',smooth:true,
+                    type: 'line', smooth: true,
                     endLabel: endLabel,
                     labelLayout: {
                         moveOverlap: 'shiftY',
@@ -286,7 +296,7 @@
                 },
                 {
                     name: '无症状',
-                    type: 'line',smooth:true,
+                    type: 'line', smooth: true,
                     endLabel: endLabel,
                     labelLayout: {
                         moveOverlap: 'shiftY',
@@ -295,7 +305,7 @@
                 },
                 {
                     name: '社会面',
-                    type: 'line',smooth:true,
+                    type: 'line', smooth: true,
                     xAxisIndex: 1,
                     yAxisIndex: 1,
                     endLabel: endLabel,
@@ -306,7 +316,7 @@
                 },
                 {
                     name: '野生确诊',
-                    type: 'line',smooth:true,
+                    type: 'line', smooth: true,
                     xAxisIndex: 1,
                     yAxisIndex: 1,
                     endLabel: endLabel,
@@ -317,7 +327,7 @@
                 },
                 {
                     name: '野生无症状',
-                    type: 'line',smooth:true,
+                    type: 'line', smooth: true,
                     xAxisIndex: 1,
                     yAxisIndex: 1,
                     endLabel: endLabel,
@@ -379,7 +389,7 @@
                         type: 'category',
                         name: '日期',
                         nameLocation: nameLocation,
-                        nameGap:nameGap,
+                        nameGap: nameGap,
                         position: 'bottom',
                         data: daysStr,
                         gridIndex: 0
@@ -387,8 +397,8 @@
                     {
                         type: 'category',
                         name: '日期',
-                        nameLocation: nameLocation, 
-                        nameGap:nameGap,
+                        nameLocation: nameLocation,
+                        nameGap: nameGap,
                         position: 'bottom',
                         data: daysStr,
                         gridIndex: 1
@@ -418,7 +428,7 @@
             var series = [
                 {
                     name: '总数',
-                    type: 'line',smooth:true,
+                    type: 'line', smooth: true,
                     endLabel: endLabel,
                     labelLayout: {
                         moveOverlap: 'shiftY',
@@ -427,7 +437,7 @@
                 },
                 {
                     name: '确诊',
-                    type: 'line',smooth:true,
+                    type: 'line', smooth: true,
                     endLabel: endLabel,
                     labelLayout: {
                         moveOverlap: 'shiftY',
@@ -436,7 +446,7 @@
                 },
                 {
                     name: '无症状',
-                    type: 'line',smooth:true,
+                    type: 'line', smooth: true,
                     endLabel: endLabel,
                     labelLayout: {
                         moveOverlap: 'shiftY',
@@ -445,7 +455,7 @@
                 },
                 {
                     name: '出舱',
-                    type: 'line',smooth:true,
+                    type: 'line', smooth: true,
                     endLabel: endLabel,
                     labelLayout: {
                         moveOverlap: 'shiftY',
@@ -454,7 +464,7 @@
                 },
                 {
                     name: '社会面',
-                    type: 'line',smooth:true,
+                    type: 'line', smooth: true,
                     xAxisIndex: 1,
                     yAxisIndex: 1,
                     endLabel: endLabel,
@@ -465,7 +475,7 @@
                 },
                 {
                     name: '野生确诊',
-                    type: 'line',smooth:true,
+                    type: 'line', smooth: true,
                     xAxisIndex: 1,
                     yAxisIndex: 1,
                     endLabel: endLabel,
@@ -476,7 +486,7 @@
                 },
                 {
                     name: '野生无症状',
-                    type: 'line',smooth:true,
+                    type: 'line', smooth: true,
                     xAxisIndex: 1,
                     yAxisIndex: 1,
                     endLabel: endLabel,
@@ -487,7 +497,7 @@
                 },
                 {
                     name: '死亡',
-                    type: 'line',smooth:true,
+                    type: 'line', smooth: true,
                     xAxisIndex: 2,
                     yAxisIndex: 2,
                     endLabel: endLabel,
@@ -498,7 +508,7 @@
                 },
                 {
                     name: '重症',
-                    type: 'line',smooth:true,
+                    type: 'line', smooth: true,
                     xAxisIndex: 2,
                     yAxisIndex: 2,
                     endLabel: endLabel,
@@ -509,7 +519,7 @@
                 },
                 {
                     name: '危重症',
-                    type: 'line',smooth:true,
+                    type: 'line', smooth: true,
                     xAxisIndex: 2,
                     yAxisIndex: 2,
                     endLabel: endLabel,
@@ -520,7 +530,7 @@
                 },
                 {
                     name: '累计死亡',
-                    type: 'line',smooth:true,
+                    type: 'line', smooth: true,
                     xAxisIndex: 2,
                     yAxisIndex: 2,
                     endLabel: endLabel,
@@ -553,7 +563,7 @@
             ]
             var numOption = {
                 title: {
-                    text: '上海市'+'(至'+toDateString(number.endDate)+'24时)'
+                    text: '上海市' + '(至' + toZhDateString(number.endDate) + '24时)'
                 },
                 tooltip: {
                     trigger: 'axis',
@@ -591,8 +601,8 @@
                     {
                         type: 'category',
                         name: '日期',
-                        nameLocation: nameLocation, 
-                        nameGap:nameGap,
+                        nameLocation: nameLocation,
+                        nameGap: nameGap,
                         position: 'bottom',
                         data: daysStr,
                         gridIndex: 0
@@ -600,8 +610,8 @@
                     {
                         type: 'category',
                         name: '日期',
-                        nameLocation: nameLocation, 
-                        nameGap:nameGap,
+                        nameLocation: nameLocation,
+                        nameGap: nameGap,
                         position: 'bottom',
                         data: daysStr,
                         gridIndex: 1
@@ -609,8 +619,8 @@
                     {
                         type: 'category',
                         name: '日期',
-                        nameLocation: nameLocation, 
-                        nameGap:nameGap,
+                        nameLocation: nameLocation,
+                        nameGap: nameGap,
                         position: 'bottom',
                         data: daysStr,
                         gridIndex: 2
@@ -680,8 +690,8 @@
                 {
                     type: 'category',
                     name: '日期',
-                    nameLocation: nameLocation, 
-                    nameGap:nameGap,
+                    nameLocation: nameLocation,
+                    nameGap: nameGap,
                     position: 'bottom',
                     data: daysStr,
                 }
@@ -739,7 +749,7 @@
                     type: 'category',
                     name: '日期',
                     nameLocation: nameLocation,
-                    nameGap:nameGap,
+                    nameGap: nameGap,
                     position: 'bottom',
                     data: daysStr,
                 }
