@@ -85,16 +85,7 @@
             var d = dateObj.getDate()
             return m + '-' + d
         }
-        function toZhDateString(date) {
-            var dateStr = '' + date
-            dateStr = dateStr.slice(0, 4) + '-' + dateStr.slice(4);
-            dateStr = dateStr.slice(0, 7) + '-' + dateStr.slice(7);
-            var dateObj = new Date(dateStr)
-            var y = dateObj.getFullYear()
-            var m = dateObj.getMonth() + 1
-            var d = dateObj.getDate()
-            return m + '月' + d + '日'
-        }
+
         document.title = "Stay at Home | 数据统计(" + toDateString(number.endDate) + ')'
         var daysStr = []
         number.date.forEach(function (key, value) {
@@ -102,121 +93,42 @@
         })
         console.log(daysStr)
 
-        function ShowTotalGrid() {
-            var dom = document.getElementById('totalGridContainer');
-            var chart = echarts.init(dom);
-            console.log(dom, chart)
-            var N_POINT = 30;
-            var grids = [];
-            var xAxes = [];
-            var yAxes = [];
-            var series = [];
-            var titles = [];
-            var count = 0;
-            Object.keys(areaNumbers).forEach(function (key) {
-                element = areaNumbers[key]
-                console.log('ShowTotalGrid', key, element)
-
-                grids.push({
-                    show: true,
-                    borderWidth: 0,
-                    shadowColor: 'rgba(0, 0, 0, 0.3)',
-                    shadowBlur: 2
-                });
-
-                xAxes.push({
-                    type: 'category',
-                    show: true,
-                    axisTick: {
-                        show: false
-                    },
-                    name: '日期',
-                    data: daysStr,
-                    gridIndex: count
-                });
-
-                yAxes.push({
-                    type: 'value',
-                    show: true,
-                    gridIndex: count,
-                    splitNumber: 1,
-                    interval: 'max'
-                });
-                series.push({
-                    name: key,
-                    type: 'line', smooth: true,
-                    endLabel: {
-                        show: true,
-                        color: 'inherit'
-                    },
-                    xAxisIndex: count,
-                    yAxisIndex: count,
-                    data: element.total
-                });
-                titles.push({
-                    textAlign: 'center',
-                    text: key,
-                    textStyle: {
-                        fontSize: 12,
-                        fontWeight: 'normal'
-                    }
-                });
-                count++;
-            })
-            grid_num = count + 1
-            grids.forEach(function (grid, idx) {
-                console.log('grids', grid, idx)
-                grid.top = 10 + idx * 100;
-                grid.left = 80
-                grid.right = 50
-                grid.height = 60;
-                console.log('grids', grid, idx)
-                titles[idx].left = 15
-                titles[idx].top = grid.top + 20
-                console.log('titles', titles, idx)
-            });
-            option = {
-                title: titles.concat([
-                    {
-                        text: '确诊+无症状',
-                        top: 'bottom',
-                        left: 'center'
-                    }
-                ]),
-                tooltip: {
-                    trigger: 'axis',
-                    axisPointer: {
-                        type: 'cross',
-                        crossStyle: {
-                            color: '#999'
-                        }
-                    }
-                },
-                grid: grids,
-                xAxis: xAxes,
-                yAxis: yAxes,
-                series: series
-            };
-
-            option && chart.setOption(option);
-        }
-        //ShowTotalGrid()
-
         allTotal = []
         allRisk = []
         shanghaiObj = null
         areaIndex = 0
-
-        var endLabel = {
-            show: true,
-            color: 'inherit',
-            lineHeight: 15,
-            formatter: '{a}: {@score}',
-            offset: [5, 0],
-        }
         var gridRight = 95
         var nameLocation = 'middle'
         var nameGap = 25
+        var lineStyle = {
+            type: 'line', 
+            smooth: true,
+            endLabel: {
+                show: true,
+                color: 'inherit',
+                lineHeight: 15,
+                formatter: '{a}: {@score}',
+                offset: [5, 0],
+            },
+            labelLayout: {
+                moveOverlap: 'shiftY',
+            },
+        }
+        var xAxisStyle = {
+            type: 'category',
+            name: '日期',
+            nameLocation: nameLocation,
+            nameGap: nameGap,
+            position: 'bottom',
+            data: daysStr,
+            axisLabel: {
+                showMinLabel: true,
+                showMaxLabel: true,
+            },
+            axisTick: {
+                alignWithLabel: true
+            }
+        }
         for (const key in areaNumbers) {
             const element = areaNumbers[key];
             element.confirmed_risk_rate = []
@@ -243,11 +155,7 @@
 
             var riskObj = {
                 name: key,
-                type: 'line', smooth: true,
-                endLabel: endLabel,
-                labelLayout: {
-                    hideOverlap: true,
-                },
+                ...lineStyle,
                 data: element.riskData
             }
 
@@ -255,11 +163,7 @@
 
             var totalObj = {
                 name: key,
-                type: 'line', smooth: true,
-                endLabel: endLabel,
-                labelLayout: {
-                    hideOverlap: true,
-                },
+                ...lineStyle,
                 data: element.total
             }
 
@@ -278,62 +182,38 @@
             var series = [
                 {
                     name: '总数',
-                    type: 'line', smooth: true,
-                    endLabel: endLabel,
-                    labelLayout: {
-                        moveOverlap: 'shiftY',
-                    },
+                    ...lineStyle,
                     data: element.total
                 },
                 {
                     name: '确诊',
-                    type: 'line', smooth: true,
-                    endLabel: endLabel,
-                    labelLayout: {
-                        moveOverlap: 'shiftY',
-                    },
+                    ...lineStyle,
                     data: element.confirmed
                 },
                 {
                     name: '无症状',
-                    type: 'line', smooth: true,
-                    endLabel: endLabel,
-                    labelLayout: {
-                        moveOverlap: 'shiftY',
-                    },
+                    ...lineStyle,
                     data: element.asymptomatic
                 },
                 {
                     name: '社会面',
-                    type: 'line', smooth: true,
                     xAxisIndex: 1,
                     yAxisIndex: 1,
-                    endLabel: endLabel,
-                    labelLayout: {
-                        moveOverlap: 'shiftY',
-                    },
+                    ...lineStyle,
                     data: element.riskData
                 },
                 {
                     name: '野生确诊',
-                    type: 'line', smooth: true,
                     xAxisIndex: 1,
                     yAxisIndex: 1,
-                    endLabel: endLabel,
-                    labelLayout: {
-                        moveOverlap: 'shiftY',
-                    },
+                    ...lineStyle,
                     data: element.confirmed_risk
                 },
                 {
                     name: '野生无症状',
-                    type: 'line', smooth: true,
                     xAxisIndex: 1,
                     yAxisIndex: 1,
-                    endLabel: endLabel,
-                    labelLayout: {
-                        moveOverlap: 'shiftY',
-                    },
+                    ...lineStyle,
                     data: element.asymptomatic_risk
                 }
             ]
@@ -386,21 +266,11 @@
                 },
                 xAxis: [
                     {
-                        type: 'category',
-                        name: '日期',
-                        nameLocation: nameLocation,
-                        nameGap: nameGap,
-                        position: 'bottom',
-                        data: daysStr,
+                        ...xAxisStyle,
                         gridIndex: 0
                     },
                     {
-                        type: 'category',
-                        name: '日期',
-                        nameLocation: nameLocation,
-                        nameGap: nameGap,
-                        position: 'bottom',
-                        data: daysStr,
+                        ...xAxisStyle,
                         gridIndex: 1
                     }
                 ],
@@ -428,115 +298,71 @@
             var series = [
                 {
                     name: '总数',
-                    type: 'line', smooth: true,
-                    endLabel: endLabel,
-                    labelLayout: {
-                        moveOverlap: 'shiftY',
-                    },
+                    ...lineStyle,
                     data: shanghaiObj.total
                 },
                 {
                     name: '确诊',
-                    type: 'line', smooth: true,
-                    endLabel: endLabel,
-                    labelLayout: {
-                        moveOverlap: 'shiftY',
-                    },
+                    ...lineStyle,
                     data: shanghaiObj.confirmed
                 },
                 {
                     name: '无症状',
-                    type: 'line', smooth: true,
-                    endLabel: endLabel,
-                    labelLayout: {
-                        moveOverlap: 'shiftY',
-                    },
+                    ...lineStyle,
                     data: shanghaiObj.asymptomatic
                 },
                 {
                     name: '出舱',
-                    type: 'line', smooth: true,
-                    endLabel: endLabel,
-                    labelLayout: {
-                        moveOverlap: 'shiftY',
-                    },
+                    ...lineStyle,
                     data: shanghaiObj.discharged
                 },
                 {
                     name: '社会面',
-                    type: 'line', smooth: true,
                     xAxisIndex: 1,
                     yAxisIndex: 1,
-                    endLabel: endLabel,
-                    labelLayout: {
-                        moveOverlap: 'shiftY',
-                    },
+                    ...lineStyle,
                     data: shanghaiObj.riskData
                 },
                 {
                     name: '野生确诊',
-                    type: 'line', smooth: true,
                     xAxisIndex: 1,
                     yAxisIndex: 1,
-                    endLabel: endLabel,
-                    labelLayout: {
-                        moveOverlap: 'shiftY',
-                    },
+                    ...lineStyle,
                     data: shanghaiObj.confirmed_risk
                 },
                 {
                     name: '野生无症状',
-                    type: 'line', smooth: true,
                     xAxisIndex: 1,
                     yAxisIndex: 1,
-                    endLabel: endLabel,
-                    labelLayout: {
-                        moveOverlap: 'shiftY',
-                    },
+                    ...lineStyle,
                     data: shanghaiObj.asymptomatic_risk
                 },
                 {
                     name: '死亡',
-                    type: 'line', smooth: true,
                     xAxisIndex: 2,
                     yAxisIndex: 2,
-                    endLabel: endLabel,
-                    labelLayout: {
-                        moveOverlap: 'shiftY',
-                    },
+                    ...lineStyle,
                     data: shanghaiObj.dead
                 },
                 {
                     name: '重症',
-                    type: 'line', smooth: true,
                     xAxisIndex: 2,
                     yAxisIndex: 2,
-                    endLabel: endLabel,
-                    labelLayout: {
-                        moveOverlap: 'shiftY',
-                    },
+                    ...lineStyle,
                     data: shanghaiObj.severe_patient
                 },
                 {
                     name: '危重症',
-                    type: 'line', smooth: true,
                     xAxisIndex: 2,
                     yAxisIndex: 2,
-                    endLabel: endLabel,
-                    labelLayout: {
-                        moveOverlap: 'shiftY',
-                    },
+                    ...lineStyle,
                     data: shanghaiObj.critical_patient
                 },
                 {
                     name: '累计死亡',
-                    type: 'line', smooth: true,
                     xAxisIndex: 2,
                     yAxisIndex: 2,
-                    endLabel: endLabel,
-                    labelLayout: {
-                        moveOverlap: 'shiftY',
-                    },
+                    ...lineStyle,
                     data: shanghaiObj.total_dead
                 },
             ]
@@ -563,7 +389,7 @@
             ]
             var numOption = {
                 title: {
-                    text: '上海市' + '(至' + toZhDateString(number.endDate) + '24时)'
+                    text: '上海市' + '(至' + toDateString(number.endDate).replace('-', '月') + ')'
                 },
                 tooltip: {
                     trigger: 'axis',
@@ -589,7 +415,7 @@
                 },
                 legend: {
                     show: true,
-                    top: 25,
+                    top: 30,
                     padding: [
                         5,  // 上
                         30, // 右
@@ -599,30 +425,15 @@
                 },
                 xAxis: [
                     {
-                        type: 'category',
-                        name: '日期',
-                        nameLocation: nameLocation,
-                        nameGap: nameGap,
-                        position: 'bottom',
-                        data: daysStr,
+                        ...xAxisStyle,
                         gridIndex: 0
                     },
                     {
-                        type: 'category',
-                        name: '日期',
-                        nameLocation: nameLocation,
-                        nameGap: nameGap,
-                        position: 'bottom',
-                        data: daysStr,
+                        ...xAxisStyle,
                         gridIndex: 1
                     },
                     {
-                        type: 'category',
-                        name: '日期',
-                        nameLocation: nameLocation,
-                        nameGap: nameGap,
-                        position: 'bottom',
-                        data: daysStr,
+                        ...xAxisStyle,
                         gridIndex: 2
                     }
                 ],
@@ -688,12 +499,7 @@
             },
             xAxis: [
                 {
-                    type: 'category',
-                    name: '日期',
-                    nameLocation: nameLocation,
-                    nameGap: nameGap,
-                    position: 'bottom',
-                    data: daysStr,
+                    ...xAxisStyle,
                 }
             ],
             yAxis: [
@@ -746,12 +552,7 @@
             },
             xAxis: [
                 {
-                    type: 'category',
-                    name: '日期',
-                    nameLocation: nameLocation,
-                    nameGap: nameGap,
-                    position: 'bottom',
-                    data: daysStr,
+                    ...xAxisStyle,
                 }
             ],
             yAxis: [
