@@ -52,7 +52,7 @@
         <div id="riskContainer" class="BigContainer"></div>
     </div>
 
-    <script src='https://cdn.jsdelivr.net/npm/echarts@5.3.1/dist/echarts.min.js'></script>
+    <script src='https://sinacloud.net/shanghaifabudata/echarts.min.js'></script>
     <script>
         var jsUrl = "https://sinacloud.net/shanghaifabudata/number.js"
         jsUrl += "?"
@@ -389,7 +389,8 @@
             ]
             var numOption = {
                 title: {
-                    text: '上海市' + '(至' + toDateString(number.endDate).replace('-', '月') + ')'
+                    text: '上海市',
+                    //subtext: ' 截至' + toDateString(number.endDate).replace('-', '月') + '号24时'
                 },
                 tooltip: {
                     trigger: 'axis',
