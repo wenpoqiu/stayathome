@@ -186,9 +186,14 @@
                     data: element.total
                 },
                 {
-                    name: '确诊',
+                    name: '确诊(总)',
                     ...lineStyle,
                     data: element.confirmed
+                },
+                {
+                    name: '确诊(转归)',
+                    ...lineStyle,
+                    data: element.confirmed_asymptomatic
                 },
                 {
                     name: '无症状',
