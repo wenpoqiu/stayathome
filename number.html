@@ -240,7 +240,7 @@
 
             var numOption = {
                 title: {
-                    text: key
+                    text: key + '(' + toDateString(number.endDate) + ')'
                 },
                 tooltip: {
                     trigger: 'axis',
@@ -401,7 +401,6 @@
             var numOption = {
                 title: {
                     text: '上海市(' + toDateString(number.endDate) + ')',
-                    //subtext: ' 截至' + toDateString(number.endDate).replace('-', '月') + '号24时'
                 },
                 tooltip: {
                     trigger: 'axis',
@@ -474,7 +473,7 @@
         var riskChart = echarts.init(riskChartDom);
         var riskOption = {
             title: {
-                text: '社会面'
+                text: '社会面(' + toDateString(number.endDate) + ')'
             },
             tooltip: {
                 trigger: 'axis',
@@ -528,7 +527,7 @@
         var totalChart = echarts.init(totalChartDom);
         var totalOption = {
             title: {
-                text: '确诊+无症状'
+                text: '确诊+无症状(' + toDateString(number.endDate) + ')'
             },
             tooltip: {
                 trigger: 'axis',
