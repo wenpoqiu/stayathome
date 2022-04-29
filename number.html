@@ -103,6 +103,7 @@
         var lineStyle = {
             type: 'line', 
             smooth: true,
+            //symbol: 'none',
             endLabel: {
                 show: true,
                 color: 'inherit',
@@ -399,7 +400,7 @@
             ]
             var numOption = {
                 title: {
-                    text: '上海市',
+                    text: '上海市(' + toDateString(number.endDate) + ')',
                     //subtext: ' 截至' + toDateString(number.endDate).replace('-', '月') + '号24时'
                 },
                 tooltip: {
