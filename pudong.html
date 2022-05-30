@@ -213,13 +213,13 @@
         }
         
         addsDays.push(startDate + '~' +  endDate)
-        var selectDateIndex = addsDays.length - 1 // 最近一天
+        var selectDateIndex = addsDays.length - s2
 
         var mobileSelect1 = new MobileSelect({
             trigger: "#dateString",
             title: "选择日期",
             wheels: [{ data: addsDays }],
-            position: [addsDays.length - 1], 
+            position: [addsDays.length - 2], 
             transitionEnd: function (indexArr, data) {
             //console.log(data);
             },
