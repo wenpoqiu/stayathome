@@ -65,7 +65,6 @@
             z-index: 100;
             width: 100%;
             text-align: center;
-            display: none;
         }
 
         .top_tip {
@@ -181,8 +180,7 @@
     </div>
     <div class="sub_title" id="addsCount"></div>
     <div class="top_subtip">
-        <p>仅供参考，具体数据以上海发布为准</p>
-        <a href="./number.html" style="text-decoration:underline"><b>统计数据</b></a>
+        <a href="./number.html" style="text-decoration:underline">仅供参考，具体数据以上海发布为准</a>
     </div>
     <script>
         var jsUrl = "https://sinacloud.net/shanghaifabudata/data_short.js"
@@ -391,10 +389,10 @@
                     add.dateStr = this.toDateString(date)
                     var lnglat = add.l.split(',')
                     //console.log(lnglat)
-                    var bShow = calcShow(lnglat)
-                    if (!bShow) {
-                        continue
-                    }
+                    // var bShow = calcShow(lnglat)
+                    // if (!bShow) {
+                    //     continue
+                    // }
                     var title = add.a
                     var dates = addrDateMap.get(add.l)
                     if (!dates) {
@@ -455,7 +453,7 @@
                 document.getElementById('dateString').innerHTML = toDateString(selectDay)
             }
             
-            document.getElementById('addsCount').innerHTML = '当前范围确诊+无症状地区' + markers.length + '个'
+            document.getElementById('addsCount').innerHTML = '确诊+无症状地区' + markers.length + '个'
         }
 
         function loadDate(){
