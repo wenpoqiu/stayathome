@@ -213,13 +213,13 @@
         }
         
         addsDays.push(startDate + '~' +  endDate)
-        var selectDateIndex = addsDays.length
+        var selectDateIndex = addsDays.length - 2
 
         var mobileSelect1 = new MobileSelect({
             trigger: "#dateString",
             title: "选择日期",
             wheels: [{ data: addsDays }],
-            position: [addsDays.length - 1], 
+            position: [addsDays.length - 2], 
             transitionEnd: function (indexArr, data) {
             //console.log(data);
             },
@@ -233,7 +233,7 @@
         window._AMapSecurityConfig = {
             securityJsCode: '17208d132f2d5cf6045e1f90cf32d4eb',
         }
-        var startZoom = 10
+        var startZoom = 14
         var map = new AMap.Map('container', {
             viewMode: '2D', // 默认使用 2D 模式，如果希望使用带有俯仰角的 3D 模式，请设置 viewMode: '3D',
             zoom: startZoom, //初始化地图层级
