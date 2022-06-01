@@ -271,14 +271,11 @@
             function onComplete(data) {
                 // data是具体的定位信息
                 console.log('onComplete', data)
-                loadDate()
             }
 
             function onError(data) {
                 // 定位出错
                 console.log('onError', data)
-                //alert("定位失败！" + data.message);
-                loadDate()
             }
         })
         
@@ -318,24 +315,6 @@
             allowCollision: false,
         });
         map.add(labelsLayer);
-
-        map.on('zoomend', mapZoomend);
-        map.on('moveend', mapMoveend);
-        function mapZoomend(){
-            console.log('mapZoomend')
-            var zoom = map.getZoom()
-            if (zoom >= startZoom) {
-                map.setFeatures(['bg','point','road','building'])
-            } else {
-                map.setFeatures(['bg','road','building'])
-            }
-            loadDate()
-        }
-        function mapMoveend(){
-            console.log('mapMoveend')
-            var zoom = map.getZoom()
-            loadDate()
-        }
 
         var markers = []
         function openMarkInfo(marker) {
@@ -413,7 +392,7 @@
                             strokeColor: '#fff',
                             strokeWidth: 2,
                         },
-                        zooms :[15, 20]
+                        zooms :[2, 20]
                     };
                     var marker = new AMap.LabelMarker({
                         name: 'labelMarker' + index,
