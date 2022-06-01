@@ -425,7 +425,7 @@
             updateTips() 
         }
         function updateTips() {
-            if (selectDateIndex == addsDays.length) {
+            if (selectDateIndex == addsDays.length - 1) {
                 document.getElementById('dateString').innerHTML = startDate + '~' +  endDate
             } else {
                 selectDay = addsDays[selectDateIndex]
@@ -436,7 +436,7 @@
         }
 
         function loadDate(){
-            if (selectDateIndex == addsDays.length) {
+            if (selectDateIndex == addsDays.length - 1) {
                 loadMarkers(adds)
             } else {
                 selectDay = days[selectDateIndex]
