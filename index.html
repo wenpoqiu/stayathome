@@ -213,13 +213,13 @@
         }
         
         addsDays.push(startDate + '~' +  endDate)
-        var selectDateIndex = addsDays.length
+        var selectDateIndex = addsDays.length - 2
 
         var mobileSelect1 = new MobileSelect({
             trigger: "#dateString",
             title: "选择日期",
             wheels: [{ data: addsDays }],
-            position: [addsDays.length - 1], 
+            position: [addsDays.length - 2], 
             transitionEnd: function (indexArr, data) {
             //console.log(data);
             },
@@ -393,7 +393,7 @@
                     // if (!bShow) {
                     //     continue
                     // }
-                    var title = add.a
+                    var title = add.n
                     var dates = addrDateMap.get(add.l)
                     if (!dates) {
                         dates = []
@@ -446,21 +446,21 @@
             updateTips() 
         }
         function updateTips() {
-            if (selectDateIndex == addsDays.length) {
+            if (selectDateIndex == addsDays.length - 1) {
                 document.getElementById('dateString').innerHTML = startDate + '~' +  endDate
             } else {
                 selectDay = addsDays[selectDateIndex]
-                document.getElementById('dateString').innerHTML = toDateString(selectDay)
+                document.getElementById('dateString').innerHTML = selectDay
             }
             
             document.getElementById('addsCount').innerHTML = '确诊+无症状地区' + markers.length + '个'
         }
 
         function loadDate(){
-            if (selectDateIndex == addsDays.length) {
+            if (selectDateIndex == addsDays.length - 1) {
                 loadMarkers(adds)
             } else {
-                selectDay = addsDays[selectDateIndex]
+                selectDay = days[selectDateIndex]
                 selectAdds = {
                     addrs: {}
                 }
